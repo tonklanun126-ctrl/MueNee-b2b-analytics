@@ -1,0 +1,140 @@
+# ==============================================================================
+# MueNee-b2b-analytics: Inventory & Stock Optimization Parameters
+# พารามิเตอร์การบริหารสินค้าคงคลังและการจัดซื้อวัตถุดิบ 8 กลุ่ม
+# ==============================================================================
+# อ้างอิงสมการและการกำหนดค่าใน SPEC.md (§1.5 และ §3.3)
+#
+# สมการหลัก:
+# 1. Safety Stock (สต็อกเพื่อความปลอดภัย):
+#    SS = Z_alpha * sigma_d * sqrt(L)
+# 2. Reorder Point (จุดสั่งซื้อซ้ำ):
+#    ROP = (d_bar * L) + SS
+# 3. Recommended Order Quantity with Perishable Cap (ปริมาณสั่งแนะนำไม่เกินอายุของสด):
+#    Q* = min( sum_{h=1}^{L+R} d_hat_{t+h} + SS - I_t , sum_{h=1}^{S_g} d_hat_{t+h} )
+# ==============================================================================
+
+# พารามิเตอร์ระดับระบบ (System-wide Inventory Policies)
+review_period_days: 1          # รอบการตรวจสอบระดับสต็อก (Review Period R = 1 วัน)
+holding_cost_annual_rate: 0.25 # อัตราต้นทุนการถือครองสต็อกต่อปี (25% ของมูลค่าสินค้า)
+stockout_cost_multiplier: 1.50 # ค่าปรับต้นทุนเสียโอกาสขาย (150% ของ Gross Margin)
+
+# พารามิเตอร์แยกตามกลุ่มวัตถุดิบหลัก 8 กลุ่ม (G1 - G8)
+commodity_groups:
+  G1:
+    group_id: 1
+    name: "pork_and_cuts"
+    thai_name: "กลุ่มเนื้อสุกรและชิ้นส่วน"
+    lead_time_days: 1
+    yield_factor: 0.90
+    yield_factor_offal: 0.95
+    shelf_life_days: 3
+    shelf_life_days_offal: 1
+    target_service_level: 0.95
+    z_alpha: 1.645
+    perishability_class: "high"
+    perishability_class_offal: "ultra"
+    storage_temp_celsius: "0 to 4"
+    min_order_batch_kg: 5.0
+
+  G2:
+    group_id: 2
+    name: "poultry"
+    thai_name: "กลุ่มสัตว์ปีก (ไก่และเป็ด)"
+    lead_time_days: 1
+    yield_factor: 0.85
+    yield_factor_wings: 0.75
+    yield_factor_duck: 0.55
+    shelf_life_days: 2
+    target_service_level: 0.95
+    z_alpha: 1.645
+    perishability_class: "high"
+    storage_temp_celsius: "0 to 3"
+    min_order_batch_kg: 5.0
+
+  G3:
+    group_id: 3
+    name: "beef"
+    thai_name: "กลุ่มเนื้อโค"
+    lead_time_days: 1
+    yield_factor: 0.85
+    shelf_life_days: 3
+    target_service_level: 0.95
+    z_alpha: 1.645
+    perishability_class: "high"
+    storage_temp_celsius: "0 to 2"
+    min_order_batch_kg: 3.0
+
+  G4:
+    group_id: 4
+    name: "seafood"
+    thai_name: "กลุ่มสัตว์น้ำและอาหารทะเลสด"
+    lead_time_days: 2
+    yield_factor: 0.85
+    yield_factor_whole_prawn: 0.55
+    yield_factor_scallop: 0.95
+    shelf_life_days: 2
+    shelf_life_days_sashimi: 1
+    target_service_level: 0.90
+    z_alpha: 1.282
+    perishability_class: "ultra"
+    storage_temp_celsius: "-1 to 2"
+    min_order_batch_kg: 2.0
+
+  G5:
+    group_id: 5
+    name: "egg_and_tofu"
+    thai_name: "กลุ่มไข่และผลิตภัณฑ์ถั่วเหลือง"
+    lead_time_days: 2
+    yield_factor_egg: 0.88
+    yield_factor_tofu: 1.00
+    shelf_life_days_egg: 14
+    shelf_life_days_tofu: 3
+    target_service_level: 0.975
+    z_alpha: 1.960
+    perishability_class: "medium"
+    storage_temp_celsius: "4 to 7"
+    min_order_batch_units: 30
+
+  G6:
+    group_id: 6
+    name: "carb_base"
+    thai_name: "กลุ่มคาร์โบไฮเดรตหลัก"
+    lead_time_days: 7
+    yield_factor: 1.00
+    shelf_life_days: 90
+    shelf_life_days_bread: 3
+    target_service_level: 0.975
+    z_alpha: 1.960
+    perishability_class: "low"
+    perishability_class_bread: "medium"
+    storage_temp_celsius: "Ambient (Dry)"
+    min_order_batch_kg: 25.0
+
+  G7:
+    group_id: 7
+    name: "fresh_veg_herbs"
+    thai_name: "กลุ่มผักสดและสมุนไพรพื้นฐาน"
+    lead_time_days: 1
+    yield_factor: 0.80
+    shelf_life_days: 3
+    target_service_level: 0.90
+    z_alpha: 1.282
+    perishability_class: "high"
+    storage_temp_celsius: "5 to 8"
+    min_order_batch_kg: 2.0
+
+  G8:
+    group_id: 8
+    name: "sauce_seasoning"
+    thai_name: "กลุ่มซอสปรุงรสและของเหลวปรุงแต่ง"
+    lead_time_days: 14
+    yield_factor: 1.00
+    shelf_life_days: 180
+    shelf_life_days_fresh_blood: 1
+    target_service_level: 0.975
+    z_alpha: 1.960
+    perishability_class: "low"
+    perishability_class_fresh_blood: "ultra"
+    storage_temp_celsius: "Ambient / Chilled for blood"
+    min_order_batch_litre: 5.0
+

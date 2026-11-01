@@ -1,0 +1,164 @@
+# ==============================================================================
+# MueNee-b2b-analytics: Academic Calendar Configuration
+# มหาวิทยาลัยศิลปากร วิทยาเขตพระราชวังสนามจันทร์ อำเภอเมือง จังหวัดนครปฐม
+# ==============================================================================
+# อ้างอิงระเบียบและปฏิทินการศึกษาระดับปริญญาบัณฑิต มหาวิทยาลัยศิลปากร
+# แหล่งอ้างอิง: กองบริการการศึกษา มหาวิทยาลัยศิลปากร (https://reg.su.ac.th/)
+# ปีการศึกษา: 2569 (2026-2027)
+# ช่วงเวลาครอบคลุม: 2026-08-01 ถึง 2027-07-31 (รวมทั้งสิ้น 365 วัน)
+# ==============================================================================
+
+academic_year: 2569
+campus: "Sanam Chandra Palace, Nakhon Pathom"
+center_coordinates:
+  latitude: 13.8199
+  longitude: 100.0443
+radius_km: 3.0
+
+date_range:
+  start_date: "2026-08-01"
+  end_date: "2027-07-31"
+  total_days: 365
+
+# ตัวคูณอุปสงค์ (Demand Multipliers) ตามที่ระบุใน SPEC.md §4.1
+demand_multipliers:
+  regular:
+    multiplier: 1.00
+    description: "ช่วงเปิดภาคการศึกษาปกติ มื้อกลางวันและมื้อเย็นมีอุปสงค์สม่ำเสมอ"
+  midterm_exam:
+    multiplier: 1.20
+    description: "สัปดาห์สอบกลางภาค อุปสงค์มื้อดึก (22:00-02:00) พุ่งสูงเป็นพิเศษ"
+    late_night_multiplier: 2.50
+  final_exam:
+    multiplier: 1.25
+    description: "สัปดาห์สอบปลายภาค ยอดมื้อดึกสูงสุด และยอดสังสรรค์พุ่งหลังสอบเสร็จ"
+    late_night_multiplier: 3.00
+  semester_break:
+    multiplier: 0.30
+    description: "ช่วงปิดภาคเรียน อุปสงค์ลดลง 60-80% ร้านรอบ ม. ได้รับผลกระทบหนัก"
+  summer_session:
+    multiplier: 0.50
+    description: "ภาคการศึกษาฤดูร้อน มีนักศึกษาบางส่วนลงเรียน"
+  public_holiday:
+    multiplier: 0.50
+    description: "วันหยุดราชการ/วันหยุดนักขัตฤกษ์ นักศึกษากลับภูมิลำเนา"
+
+# ช่วงเวลาตามปฏิทินการศึกษา (Chronological Academic Periods)
+periods:
+  - id: "pre_sem1_break"
+    period_type: "semester_break"
+    name: "ช่วงปิดภาคก่อนเปิดเทอม 1"
+    start_date: "2026-08-01"
+    end_date: "2026-08-16"
+
+  - id: "sem1_regular_part1"
+    period_type: "regular"
+    name: "ภาคการศึกษาที่ 1 (ช่วงก่อนสอบกลางภาค)"
+    start_date: "2026-08-17"
+    end_date: "2026-10-04"
+
+  - id: "sem1_midterm"
+    period_type: "midterm_exam"
+    name: "สัปดาห์สอบกลางภาค ภาคการศึกษาที่ 1"
+    start_date: "2026-10-05"
+    end_date: "2026-10-18"
+
+  - id: "sem1_regular_part2"
+    period_type: "regular"
+    name: "ภาคการศึกษาที่ 1 (ช่วงหลังสอบกลางภาค)"
+    start_date: "2026-10-19"
+    end_date: "2026-12-06"
+
+  - id: "sem1_final"
+    period_type: "final_exam"
+    name: "สัปดาห์สอบปลายภาค ภาคการศึกษาที่ 1"
+    start_date: "2026-12-07"
+    end_date: "2026-12-20"
+
+  - id: "sem1_break"
+    period_type: "semester_break"
+    name: "ช่วงปิดภาคเรียนที่ 1 และเทศกาลปีใหม่"
+    start_date: "2026-12-21"
+    end_date: "2027-01-10"
+
+  - id: "sem2_regular_part1"
+    period_type: "regular"
+    name: "ภาคการศึกษาที่ 2 (ช่วงก่อนสอบกลางภาค)"
+    start_date: "2027-01-11"
+    end_date: "2027-03-07"
+
+  - id: "sem2_midterm"
+    period_type: "midterm_exam"
+    name: "สัปดาห์สอบกลางภาค ภาคการศึกษาที่ 2"
+    start_date: "2027-03-08"
+    end_date: "2027-03-21"
+
+  - id: "sem2_regular_part2"
+    period_type: "regular"
+    name: "ภาคการศึกษาที่ 2 (ช่วงหลังสอบกลางภาค)"
+    start_date: "2027-03-22"
+    end_date: "2027-05-09"
+
+  - id: "sem2_final"
+    period_type: "final_exam"
+    name: "สัปดาห์สอบปลายภาค ภาคการศึกษาที่ 2"
+    start_date: "2027-05-10"
+    end_date: "2027-05-23"
+
+  - id: "sem2_break"
+    period_type: "semester_break"
+    name: "ช่วงปิดภาคการศึกษาที่ 2"
+    start_date: "2027-05-24"
+    end_date: "2027-06-06"
+
+  - id: "summer_term"
+    period_type: "summer_session"
+    name: "ภาคการศึกษาฤดูร้อน (Summer Session)"
+    start_date: "2027-06-07"
+    end_date: "2027-07-18"
+
+  - id: "summer_break"
+    period_type: "semester_break"
+    name: "ช่วงปิดภาคฤดูร้อน เตรียมเปิดปีการศึกษาใหม่"
+    start_date: "2027-07-19"
+    end_date: "2027-07-31"
+
+# วันหยุดราชการและวันหยุดนักขัตฤกษ์สำคัญ (Public Holidays)
+public_holidays:
+  - date: "2026-08-12"
+    name: "วันแม่แห่งชาติ"
+  - date: "2026-10-13"
+    name: "วันนวมินทรมหาราช"
+  - date: "2026-10-23"
+    name: "วันปิยมหาราช"
+  - date: "2026-12-05"
+    name: "วันคล้ายวันพระบรมราชสมภพ ร.9 / วันพ่อแห่งชาติ"
+  - date: "2026-12-10"
+    name: "วันรัฐธรรมนูญ"
+  - date: "2026-12-31"
+    name: "วันสิ้นปี"
+  - date: "2027-01-01"
+    name: "วันขึ้นปีใหม่"
+  - date: "2027-02-21"
+    name: "วันมาฆบูชา"
+  - date: "2027-04-06"
+    name: "วันจักรี"
+  - date: "2027-04-13"
+    name: "วันสงกรานต์"
+  - date: "2027-04-14"
+    name: "วันสงกรานต์"
+  - date: "2027-04-15"
+    name: "วันสงกรานต์"
+  - date: "2027-05-01"
+    name: "วันแรงงานแห่งชาติ"
+  - date: "2027-05-04"
+    name: "วันฉัตรมงคล"
+  - date: "2027-05-20"
+    name: "วันวิสาขบูชา"
+  - date: "2027-06-03"
+    name: "วันเฉลิมพระชนมพรรษา สมเด็จพระนางเจ้าฯ พระบรมราชินี"
+  - date: "2027-07-18"
+    name: "วันอาสาฬหบูชา"
+  - date: "2027-07-28"
+    name: "วันเฉลิมพระชนมพรรษา พระบาทสมเด็จพระเจ้าอยู่หัว"
+

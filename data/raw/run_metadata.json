@@ -1,0 +1,30 @@
+{
+  "run_id": "A-20260101-v1",
+  "random_seed": 20260101,
+  "generated_at": "2026-10-18T06:53:42.489333+00:00",
+  "total_days": 365,
+  "total_menus": 30,
+  "total_daily_records": 10950,
+  "total_annual_orders": 510064,
+  "total_annual_revenue_thb": 54336006,
+  "orders_by_tier": {
+    "economy": 337212,
+    "mid": 119589,
+    "premium_social": 53263
+  },
+  "orders_by_period": {
+    "final_exam": 53574,
+    "midterm_exam": 53826,
+    "public_holiday": 14874,
+    "regular": 322160,
+    "semester_break": 31587,
+    "summer_session": 34043
+  },
+  "semester_break_drop_percent": 67.76,
+  "exam_late_night_increase_ratio": 3.65,
+  "scoring_vectorization_time_ms": 26.0,
+  "file_checksums": {
+    "daily_meal_logs_csv_sha256": "3b3152fd73d480f36431d337a0dbdc8fa7477956272bbf53c6565095496ff13f",
+    "tag_trend_scores_csv_sha256": "32575a63e8783cdb31d586f79a5d9923f95422c8b51d05b086f4871d0ca6c029"
+  }
+}

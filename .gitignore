@@ -1,0 +1,75 @@
+# ==============================================================================
+# MueNee-b2b-analytics: Git Ignore Configuration
+# ป้องกันการบันทึกไฟล์ชั่วคราว, Cache, Environment และ Dataset ขนาดใหญ่ (>50MB)
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. ข้อมูลดิบและผลลัพธ์การประมวลผลขนาดใหญ่ (Large Datasets)
+# ------------------------------------------------------------------------------
+data/raw/*.csv
+!data/raw/.gitkeep
+data/processed/*.rds
+data/processed/*.csv
+!data/processed/.gitkeep
+
+# ------------------------------------------------------------------------------
+# 2. ผลลัพธ์การวิเคราะห์และรายงานที่สร้างขึ้นอัตโนมัติ (Generated Outputs & Reports)
+# ------------------------------------------------------------------------------
+outputs/*.csv
+outputs/figures/*.png
+outputs/figures/*.pdf
+reports/output/*
+!reports/output/.gitkeep
+
+# ------------------------------------------------------------------------------
+# 3. สภาพแวดล้อมภาษา Python (Python Environment & Cache)
+# ------------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.venv/
+venv/
+ENV/
+env/
+.ipynb_checkpoints/
+
+# ------------------------------------------------------------------------------
+# 4. สภาพแวดล้อมภาษา R (R Environment, History & renv Library)
+# ------------------------------------------------------------------------------
+.Rhistory
+.RData
+.Ruserdata
+.Renviron
+.Rproj.user/
+renv/library/
+renv/python/
+renv/staging/
+renv/local/
+
+# ------------------------------------------------------------------------------
+# 5. การตั้งค่า Editor และระบบปฏิบัติการ (OS & IDE Configurations)
+# ------------------------------------------------------------------------------
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+

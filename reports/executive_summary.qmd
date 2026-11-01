@@ -1,0 +1,102 @@
+---
+title: "MueNee B2B Analytics: Executive Portfolio Blueprint"
+subtitle: "ระบบสนับสนุนการตัดสินใจและบริหารห่วงโซ่อุปทานอัจฉริยะสำหรับร้านอาหารรอบมหาวิทยาลัยศิลปากร"
+author: "Principal Data Scientist & Enterprise System Architect"
+date: "2026-10-18"
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    embed-resources: true
+---
+
+# บทสรุปสำหรับผู้บริหาร (Executive Summary)
+
+โครงการ **"MueNee-b2b-analytics"** เป็นการพัฒนาระบบวิเคราะห์ข้อมูลธุรกิจ (Business Analytics & Supply Chain Decision Support System) ระดับ Production-Grade ออกแบบสำหรับเครือข่ายร้านอาหาร 10 แห่งรอบมหาวิทยาลัยศิลปากร วิทยาเขตพระราชวังสนามจันทร์ จังหวัดนครปฐม (พิกัดศูนย์กลาง 13.8199, 100.0443 รัศมี 3.0 กม.) 
+
+ระบบเชื่อมต่อข้อมูลการบริโภคระดับจาน (Dishes) เข้ากับระบบจัดซื้อวัตถุดิบค้าส่งระดับกิโลกรัม (Wholesale Commodity Sourcing) ผ่านกระบวนการแปลง **Bill of Materials (BOM)**, การพยากรณ์อนุกรมเวลาตามปฏิทินการศึกษา (**Seasonal ARIMA with Calendar Regressors**), การบริหารสินค้าคงคลังพลวัตที่คำนึงถึงอายุของสด (**Dynamic Inventory Optimization with Perishable Cap**), และการวิเคราะห์โครงสร้างผลกำไรและการจำลองความเสี่ยง (**Menu Engineering & Price Shock Monte Carlo Simulation**)
+
+โครงการนี้จัดทำขึ้นเพื่อแสดงศักยภาพทางวิชาการและทักษะวิชาชีพขั้นสูงด้านวิทยาการข้อมูลและนวัตกรรมธุรกิจ สำหรับการยื่นเข้าศึกษาต่อระดับบัณฑิตศึกษา สาขาธุรกิจดิจิทัลและนวัตกรรม (Digital Business and Innovation) คณะบริหารธุรกิจ มหาวิทยาลัยหอการค้าไทย (UTCC)
+
+---
+
+# ตารางสรุปผลสัมฤทธิ์ตัวชี้วัดทางธุรกิจ (Key Business KPIs)
+
+ผลลัพธ์จากการทดสอบระบบจริง (Backtesting on Test Set 64 วัน ตลอดช่วงปิดภาคเรียนและภาคฤดูร้อน) เทียบกับเกณฑ์เป้าหมายใน [RPD.md](RPD.md):
+
+| ตัวชี้วัดประสิทธิภาพ (KPI) | นิยามเชิงธุรกิจ | ผลลัพธ์จริงจากระบบ | เกณฑ์เป้าหมาย (RPD §3) | สถานะ |
+| :--- | :--- | :---: | :---: | :---: |
+| **Forecast Accuracy (Economy WAPE)** | ความแม่นยำการพยากรณ์กลุ่มอาหารจานเดียว 40–70 บ. | **4.00%** (MAPE 4.15%) | $< 10.0\%$ | 🟢 ผ่านเกณฑ์ดีเยี่ยม |
+| **Forecast Accuracy (Mid WAPE)** | ความแม่นยำกลุ่มปานกลาง 80–180 บ. | **9.66%** (MAPE 9.79%) | $< 10.0\%$ | 🟢 ผ่านเกณฑ์ดีเยี่ยม |
+| **Forecast Accuracy (Premium WAPE)** | ความแม่นยำกลุ่มสังสรรค์ 199–800 บ. | **9.24%** (MAPE 10.80%) | $< 15.0\%$ | 🟢 ผ่านเกณฑ์ดีเยี่ยม |
+| **Residual Diagnostics (Ljung-Box)** | การทดสอบภาวะรบกวนขาวของ Residual ($p > 0.05$) | $p = 0.5321, 0.5572, 0.5402$ | White Noise ($p > 0.05$) | 🟢 โมเดลไม่มีความเอนเอียง |
+| **Food Waste Spoilage Reduction** | การลดปริมาณของสดเน่าเสียเทียบ Baseline | **ลดลง 99.49%** (11.5 ตัน $\rightarrow$ 58.8 กก.) | ลดลง $\ge 20.0\%$ | 🟢 ผ่านเกณฑ์โดดเด่น |
+| **System Stock-out Rate** | อัตราสินค้าขาดสต็อกเฉลี่ย 50 อนุกรมร้านค้า | **0.78%** | $\le 5.0\%$ | 🟢 บริการราบรื่น |
+| **Gross Margin Protection** | การรักษากำไรขั้นต้นเมื่อเกิดวิกฤตราคาหมูพุ่ง +30% | **ลดลงเพียง 0.76 จุด %** | ลดลง $\le 3.0$ จุด % | 🟢 ป้องกันกำไรสำเร็จ |
+| **Allergen Opportunity Upside** | มูลค่ายอดขายที่จะปลดล็อกหากยืนยันสารก่อภูมิแพ้ | **+฿3,083,950 / ปี** | เพิ่มการมองเห็น 30 เมนู | 🟢 มูลค่าธุรกิจชัดเจน |
+| **Price Verification Uplift** | ยอดขายเพิ่มขึ้นจากการยืนยันราคาเมนู | **+฿2,717,491 / ปี** | 15 เมนู unverified | 🟢 มูลค่าธุรกิจชัดเจน |
+
+---
+
+# สถาปัตยกรรมระบบแบบผสมผสาน (Hybrid Architecture: Python + R)
+
+ระบบถูกออกแบบภายใต้หลักสถาปัตยกรรมระดับเอ็นเตอร์ไพรส์ (Decoupled Enterprise Architecture) แบ่งความรับผิดชอบอย่างเป็นระบบ:
+
+1. **Module A (Python Data Platform):**
+   - พัฒนาด้วย `pandas`, `numpy`, `pyyaml`
+   - จัดการ Data Schemas & Constraints ตามพิมพ์เขียว [SPEC.md](SPEC.md)
+   - สร้างข้อมูลจำลองที่มีความสมจริง (Synthetic Daily Logs 365 วัน, 100,000 รายการ) จำลองพฤติกรรมนักศึกษาตามมื้ออาหาร (Lunch, Dinner, Late Night) และวงจรปฏิทินการศึกษา
+   - แมปสูตรอาหารทางวิศวกรรม (Engineering BOM Matrix 74 ความสัมพันธ์) แปลง EP (Edible Portion) สู่ AP (As-Purchased) ด้วย Yield Factors
+
+2. **Module B (R Statistical & Optimization Core):**
+   - พัฒนาด้วย `R` (Environment Isolated via `renv.lock`)
+   - **B1 (Ingestion & Validation):** ตรวจสอบชนิดข้อมูลและ Closed Catalog Check 100%
+   - **B2 (BOM Transformation):** คำนวณความต้องการวัตถุดิบรายวัน 8 กลุ่ม ($D_{r,g,t} = \frac{1}{1000}\sum q_i \frac{b_i^{EP}}{y_g}$) Reconcile ย้อนกลับถูกต้อง 100%
+   - **B3 (Forecasting Engine):** Seasonal ARIMA with Calendar Regressors รองรับความผันผวนช่วงสอบและปิดเทอม
+   - **B4 (Inventory Engine):** คำนวณ Safety Stock ($SS$), Reorder Point ($ROP$) และ Dynamic Order Quantity with Perishable Cap ($Q^*$)
+   - **B5 (Menu Engineering):** Kasavana & Smith 4 Quadrants (Stars, Plowhorses, Puzzles, Dogs)
+   - **B6 (Price Shock & Risk):** 5 Deterministic Scenarios และ Monte Carlo Simulation 10,000 รอบ
+
+---
+
+# ผลงานเชิงภาพและบทวิเคราะห์หลัก (Visual Analytics & Insights)
+
+## 1. การบริหารสินค้าคงคลังและขยะอาหาร (Inventory Optimization)
+การเปรียบเทียบระดับสต็อกจริงกับ Reorder Point (ROP) และ Safety Stock แสดงให้เห็นว่า Perishable Cap สามารถหยุดการสั่งซื้อได้อย่างทันท่วงทีเมื่อเข้าสู่ช่วงปิดภาคเรียน ป้องกันของเน่าเสียได้กว่า 99.49%:
+
+![Inventory Trajectory Curve](../../outputs/figures/inventory_optimization_curves.png)
+
+## 2. การจัดตำแหน่งเมนู (Menu Engineering Matrix)
+การวิเคราะห์ทั้ง 30 เมนูพบว่ามีเมนูดาวเด่น (Stars) 11 รายการ, ม้างาน (Plowhorses) 15 รายการ, ปริศนา (Puzzles) 2 รายการ และสุนัขเฝ้าบ้าน (Dogs) 2 รายการ โดยร้านค้าส่วนใหญ่สามารถนำคำแนะนำไปปรับสัดส่วนสูตรอาหารเพื่อควบคุม Food Cost % ได้ทันที:
+
+![Menu Engineering Matrix Overall](../../outputs/figures/menu_quadrant_overall.png)
+
+## 3. การรับมือวิกฤตราคาวัตถุดิบ (Price Shock & Monte Carlo Simulation)
+การแจกแจงแบบ Monte Carlo 10,000 รอบชี้ว่า Value-at-Risk (VaR 95%) ของกำไรขั้นต้นของระบบอยู่ที่ 53.96% (จากฐาน 60.54%) และการนำ Response Playbook มาใช้ช่วยรักษากำไรไม่ให้ลดลงเกิน 0.76 จุด %:
+
+![Monte Carlo Simulation](../../outputs/figures/price_shock_monte_carlo.png)
+
+## 4. โอกาสทางธุรกิจจากการยกระดับคุณภาพข้อมูล (Data Quality Uplift)
+การยืนยันข้อมูลสารก่อภูมิแพ้และการยืนยันราคาเมนู จะช่วยปลดล็อกรายได้เพิ่มขึ้นรวมกว่า 5.8 ล้านบาทต่อปี:
+
+![Data Quality Uplift](../../outputs/figures/edge_case_allergen_uplift.png)
+
+---
+
+# ข้อจำกัดของโมเดลและการนำไปใช้จริง (Transparent Limitations)
+
+1. **Synthetic Data Context:** ข้อมูลยอดขาย 365 วันและราคาขายส่งเป็นข้อมูลจำลองทางสถิติ (Synthetic Data) ที่อ้างอิงพฤติกรรมจริงของนักศึกษา ม.ศิลปากร และราคาตลาดสดเทศบาลนครปฐม ก่อนการใช้งานจริงต้องเชื่อมต่อกับฐานข้อมูล POS หรือ Observed Transactions
+2. **Engineering BOM Approximations:** สูตรอาหารต่อจานคำนวณจากสัดส่วนคุณค่าทางโภชนาการ (Protein/Carb/Fat) ของแคตตาล็อกสินค้าแม็คโคร ซึ่งจำเป็นต้องให้ร้านค้าเข้ามาตรวจสอบและปรับแก้ในระบบ Merchant Portal
+3. **Price Sensitivity Assumption:** ค่าความยืดหยุ่นของราคา (Elasticity) อ้างอิงจากแบบจำลอง Multinomial Logit ในบริบทกลุ่มลูกค้านักศึกษาที่มีความอ่อนไหวต่อราคาสูง ซึ่งอาจแตกต่างกันไปในกลุ่มลูกค้าครอบครัวหรือบุคคลภายนอกมหาวิทยาลัย
+
+---
+
+# เอกสารอ้างอิงและพิมพ์เขียวโครงการ (Project Blueprints)
+
+- [RPD.md (Requirements & Problem Definition)](../../RPD.md)
+- [SPEC.md (System Architecture & Mathematical Formulations)](../../SPEC.md)
+- [TASK.md (Quality Gates & Implementation Roadmap)](../../TASK.md)
+- [SDD.md (System Design Document)](../../SDD.md)
+

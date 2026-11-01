@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MueNee B2B Analytics - Module A Data Quality Report</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap');
+        body { font-family: 'Sarabun', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 p-6">
+    <div class="max-w-5xl mx-auto space-y-6">
+        <!-- Header -->
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+                <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-semibold mb-2">Gate 2 Quality Passed ✅</span>
+                <h1 class="text-2xl font-bold text-slate-900">MueNee B2B Analytics: Data Quality & Integrity Report</h1>
+                <p class="text-sm text-slate-500">Module A (Synthetic Demand Generation Engine) • Run ID: <code class="bg-slate-100 px-2 py-0.5 rounded text-indigo-600">A-20260101-v1</code></p>
+            </div>
+            <div class="text-right text-xs text-slate-400">
+                <p>Generated: 2026-10-18T06:53:42.489333+00:00</p>
+                <p>Location: Sanam Chandra Palace (13.8199, 100.0443)</p>
+            </div>
+        </div>
+
+        <!-- Metric Cards -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Total Records</p>
+                <p class="text-2xl font-bold text-slate-900 mt-1">10,950</p>
+                <p class="text-xs text-emerald-600 mt-1">365 วัน × 30 เมนู (100% ครบ)</p>
+            </div>
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Total Orders</p>
+                <p class="text-2xl font-bold text-indigo-600 mt-1">510,064</p>
+                <p class="text-xs text-slate-500 mt-1">ยอดสั่งซื้อจำลองทั้งปี</p>
+            </div>
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Total Revenue</p>
+                <p class="text-2xl font-bold text-emerald-600 mt-1">฿54,336,006</p>
+                <p class="text-xs text-slate-500 mt-1">มูลค่าธุรกรรมรอบ ม.ศิลปากร</p>
+            </div>
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Vectorization Time</p>
+                <p class="text-2xl font-bold text-amber-600 mt-1">26.0 ms</p>
+                <p class="text-xs text-slate-500 mt-1">5,000 ผู้ใช้ × 30 เมนู</p>
+            </div>
+        </div>
+
+        <!-- Verification Gates Table -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+            <h2 class="text-lg font-bold text-slate-900">ผลการตรวจสอบเกณฑ์ทางสถิติและบูรณภาพข้อมูล (Quality Gates)</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead>
+                        <tr class="border-b border-slate-200 text-slate-400 text-xs uppercase">
+                            <th class="pb-3">กฎการตรวจสอบ (Rule)</th>
+                            <th class="pb-3">เกณฑ์เป้าหมาย (Spec)</th>
+                            <th class="pb-3">ค่าที่วัดได้จริง (Observed)</th>
+                            <th class="pb-3 text-right">สถานะ</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        <tr>
+                            <td class="py-3 font-medium">1. Time Window Consistency</td>
+                            <td>orders_total = lunch + dinner + late + other</td>
+                            <td>ตรงเป๊ะ 100% ทุกแถว (10,950/10,950)</td>
+                            <td class="text-right"><span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded text-xs">PASS</span></td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 font-medium">2. Source Channel Consistency</td>
+                            <td>orders_total = rec + scan + manual</td>
+                            <td>ตรงเป๊ะ 100% ทุกแถว (10,950/10,950)</td>
+                            <td class="text-right"><span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded text-xs">PASS</span></td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 font-medium">3. Tier Volume Distribution</td>
+                            <td>Economy > Mid > Premium/Social</td>
+                            <td>337,212 > 119,589 > 53,263</td>
+                            <td class="text-right"><span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded text-xs">PASS</span></td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 font-medium">4. Semester Break Demand Drop</td>
+                            <td>ลดลง 60.0% – 80.0% เทียบช่วงปกติ</td>
+                            <td>ลดลง 67.8%</td>
+                            <td class="text-right"><span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded text-xs">PASS</span></td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 font-medium">5. Exam Season Late Night Surge</td>
+                            <td>orders_late_night ช่วงสอบ ≥ 2.0x regular</td>
+                            <td>เพิ่มขึ้น 3.65 เท่า</td>
+                            <td class="text-right"><span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded text-xs">PASS</span></td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 font-medium">6. Closed Catalog Integrity</td>
+                            <td>10 ร้านค้า / 30 เมนู ตรงตาม Seed Data</td>
+                            <td>Foreign Key และ Unique Key ถูกต้อง 100%</td>
+                            <td class="text-right"><span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded text-xs">PASS</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Breakdown Details -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                <h3 class="font-bold text-slate-800 text-sm">สัดส่วนยอดสั่งซื้อตามระดับราคา (Spending Tiers)</h3>
+                <div class="space-y-2">
+                    <div>
+                        <div class="flex justify-between text-xs mb-1">
+                            <span class="font-medium text-slate-600">Economy (40-70 บ.)</span>
+                            <span class="font-bold">337,212 จาน (66.1%)</span>
+                        </div>
+                        <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                            <div class="bg-emerald-500 h-2.5" style="width: 66.11170362934847%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs mb-1">
+                            <span class="font-medium text-slate-600">Mid Tier (80-180 บ.)</span>
+                            <span class="font-bold">119,589 จาน (23.4%)</span>
+                        </div>
+                        <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                            <div class="bg-blue-500 h-2.5" style="width: 23.44588130117005%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs mb-1">
+                            <span class="font-medium text-slate-600">Premium / Social (199-800 บ.)</span>
+                            <span class="font-bold">53,263 จาน (10.4%)</span>
+                        </div>
+                        <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                            <div class="bg-purple-500 h-2.5" style="width: 10.442415069481477%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                <h3 class="font-bold text-slate-800 text-sm">สัดส่วนคำสั่งซื้อตามช่วงปฏิทินการศึกษา ม.ศิลปากร</h3>
+                <div class="text-xs space-y-2">
+                    <div class="flex justify-between border-b pb-1">
+                        <span class="text-slate-500">Regular Semester (เปิดเทอมปกติ):</span>
+                        <span class="font-bold text-slate-700">322,160 จาน</span>
+                    </div>
+                    <div class="flex justify-between border-b pb-1">
+                        <span class="text-slate-500">Exam Weeks (สอบกลางภาค/ปลายภาค):</span>
+                        <span class="font-bold text-indigo-600">107,400 จาน</span>
+                    </div>
+                    <div class="flex justify-between border-b pb-1">
+                        <span class="text-slate-500">Semester Breaks (ปิดภาคเรียน):</span>
+                        <span class="font-bold text-amber-600">31,587 จาน</span>
+                    </div>
+                    <div class="flex justify-between border-b pb-1">
+                        <span class="text-slate-500">Summer Session & Holidays:</span>
+                        <span class="font-bold text-slate-700">48,917 จาน</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- File Checksums -->
+        <div class="bg-slate-900 text-slate-300 p-5 rounded-2xl text-xs space-y-2 font-mono">
+            <p class="text-slate-400 font-bold uppercase tracking-wider">Cryptographic Lineage Verification (SHA-256)</p>
+            <p>daily_meal_logs.csv: <span class="text-emerald-400">3b3152fd73d480f36431d337a0dbdc8fa7477956272bbf53c6565095496ff13f</span></p>
+            <p>tag_trend_scores.csv: <span class="text-emerald-400">32575a63e8783cdb31d586f79a5d9923f95422c8b51d05b086f4871d0ca6c029</span></p>
+        </div>
+    </div>
+</body>
+</html>

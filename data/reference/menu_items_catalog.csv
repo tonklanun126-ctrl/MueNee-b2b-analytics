@@ -1,0 +1,32 @@
+restaurant_id,menu_item_id,name,price_tier,price_amount,price_confidence,calories,protein_grams,carbs_grams,fat_grams,tags,ingredients,allergens,ingredients_known,allergens_known,vegetarian_confirmed,halal_confirmed,is_active
+madam-ho-sanamchan,madam-ho-pork-crunch-set,ชุดหมูกรุบกริบ,premium_social,359,verified,980,55,75,50,hot-pot;vietnamese;shared,pork,soy;sesame,FALSE,FALSE,FALSE,FALSE,TRUE
+madam-ho-sanamchan,madam-ho-paper-pot-pho,เฝอหม้อกระดาษ,premium_social,399,verified,920,48,105,34,hot-pot;noodles;vietnamese,,soy;wheat,FALSE,FALSE,FALSE,FALSE,TRUE
+madam-ho-sanamchan,madam-ho-soft-pork-heart-set,ชุดหมูขนุ้มหัวใจ,premium_social,499,verified,1120,68,82,58,hot-pot;vietnamese;shared,pork,soy;sesame,FALSE,FALSE,FALSE,FALSE,TRUE
+volcano-prawn,volcano-baked-prawn,กุ้งอบภูเขาไฟ,premium_social,800,unverified,760,88,30,32,seafood;shared;signature,shellfish,shellfish,FALSE,FALSE,FALSE,FALSE,TRUE
+volcano-prawn,volcano-three-armies-salad,ยำสามทัพ,premium_social,250,unverified,420,38,28,18,seafood;spicy;salad,shellfish;fish,shellfish;fish,FALSE,FALSE,FALSE,FALSE,TRUE
+volcano-prawn,volcano-sour-curry-prawn-omelette,แกงส้มชะอมกุ้ง,mid,180,unverified,510,34,32,27,thai;spicy;curry,shellfish;egg,shellfish;egg;fish,FALSE,FALSE,FALSE,FALSE,TRUE
+bonchon-sanamchan,bonchon-wings-6,ปีกไก่บอนชอน 6 ชิ้น,premium_social,199,verified,640,42,44,33,korean;fried;chicken,chicken,soy;wheat;sesame,FALSE,FALSE,FALSE,FALSE,TRUE
+bonchon-sanamchan,bonchon-chicken-rice-soy-garlic,ชุดข้าวกล่องไก่บอนชอน ซอยการ์ลิค,premium_social,229,verified,790,40,98,28,korean;rice;chicken,chicken,soy;wheat;sesame,FALSE,FALSE,FALSE,FALSE,TRUE
+bonchon-sanamchan,bonchon-fish-rice-hot,ชุดข้าวกล่องปลาทอดบอนชอน ฮอท,premium_social,259,verified,760,34,105,23,korean;rice;fish;spicy,fish,fish;soy;wheat;sesame,FALSE,FALSE,FALSE,FALSE,TRUE
+pa-ja-23-hours,pa-ja-boiled-chicken-rice,ข้าวไก่ต้ม,economy,59,verified,610,32,78,18,thai;rice;chicken,chicken,soy,FALSE,FALSE,FALSE,FALSE,TRUE
+pa-ja-23-hours,pa-ja-fried-chicken-rice,ข้าวไก่ทอด,economy,59,verified,760,34,88,29,thai;rice;fried;chicken,chicken,soy;wheat,FALSE,FALSE,FALSE,FALSE,TRUE
+pa-ja-23-hours,pa-ja-spicy-chicken-rice,ข้าวยำไก่แซ่บ,economy,69,verified,690,35,91,21,thai;rice;spicy;chicken,chicken,fish;wheat,FALSE,FALSE,FALSE,FALSE,TRUE
+good-food-nakhon-pathom,good-food-custom-sandwich,แซนด์วิชเลือกไส้,mid,109,unverified,430,22,48,17,healthy;sandwich,,wheat;egg;milk,FALSE,FALSE,FALSE,FALSE,TRUE
+good-food-nakhon-pathom,good-food-banana-oat-loaf,โลฟโอ๊ตกล้วยน้ำว้า,economy,59,unverified,260,6,44,8,healthy;bakery;snack,,wheat;egg;milk,FALSE,FALSE,FALSE,FALSE,TRUE
+good-food-nakhon-pathom,good-food-salmon-salad-rice,Salad Rice Salmon,mid,159,unverified,520,29,61,18,healthy;rice;salmon,fish,fish;soy;sesame,FALSE,FALSE,FALSE,FALSE,TRUE
+tama-nakhon-pathom,tama-kani-miso-set,คานิมิโซะ,mid,169,verified,590,25,72,22,japanese;rice;crab,shellfish,shellfish;soy;egg,FALSE,FALSE,FALSE,FALSE,TRUE
+tama-nakhon-pathom,tama-salmon-ebiko-sauce-rice,ข้าวแซลมอนซอสไข่กุ้ง,mid,159,verified,650,31,80,23,japanese;rice;salmon,fish;shellfish,fish;shellfish;soy;egg,FALSE,FALSE,FALSE,FALSE,TRUE
+tama-nakhon-pathom,tama-torched-salmon-mayo-rice,ข้าวแซลมอนเบิร์นมาโย,mid,159,verified,720,31,82,29,japanese;rice;salmon,fish;egg,fish;egg;soy,FALSE,FALSE,FALSE,FALSE,TRUE
+loong-loy-pa-lan,loong-loy-tofu-pork-soup,แกงจืดเต้าหู้หมูสับ เล็ก,mid,80,verified,310,23,16,17,thai;soup,pork,soy,FALSE,FALSE,FALSE,FALSE,TRUE
+loong-loy-pa-lan,loong-loy-large-crab-fried-rice,ข้าวผัดปู ใหญ่,mid,150,verified,880,35,122,27,thai;rice;shared,shellfish;egg,shellfish;egg;soy,FALSE,FALSE,FALSE,FALSE,TRUE
+loong-loy-pa-lan,loong-loy-jungle-catfish-curry,แกงป่าปลาบึก ชาม,mid,80,verified,330,31,19,14,thai;curry;spicy;fish,fish,fish,FALSE,FALSE,FALSE,FALSE,TRUE
+kinkane-89,kinkane-salmon-sashimi,แซลมอนซาชิมิ,premium_social,220,unverified,250,30,2,14,japanese;sashimi;salmon,fish,fish;soy,FALSE,FALSE,FALSE,FALSE,TRUE
+kinkane-89,kinkane-hamachi-sashimi,ฮามาจิซาชิมิ,premium_social,280,unverified,270,29,1,17,japanese;sashimi,fish,fish;soy,FALSE,FALSE,FALSE,FALSE,TRUE
+kinkane-89,kinkane-scallop-sashimi,โฮตาเตะซาชิมิ,premium_social,250,unverified,170,27,8,3,japanese;sashimi;shellfish,shellfish,shellfish;soy,FALSE,FALSE,FALSE,FALSE,TRUE
+hinn-red-pork-rice,hinn-red-pork-rice,ข้าวหมูแดง,economy,60,unverified,650,29,86,21,thai;rice;pork,pork;egg,egg;soy;wheat,FALSE,FALSE,FALSE,FALSE,TRUE
+hinn-red-pork-rice,hinn-crispy-pork-rice,ข้าวหมูกรอบ,economy,60,unverified,780,30,84,36,thai;rice;pork,pork;egg,egg;soy;wheat,FALSE,FALSE,FALSE,FALSE,TRUE
+hinn-red-pork-rice,hinn-roast-duck-rice,ข้าวหน้าเป็ด,economy,60,unverified,720,32,83,28,thai;rice;duck,egg,egg;soy;wheat,FALSE,FALSE,FALSE,FALSE,TRUE
+thasanam-boat-noodles,thasanam-boat-noodle-soup,ก๋วยเตี๋ยวเรือน้ำ,economy,40,unverified,410,23,57,10,thai;noodles;soup,pork;beef,soy;wheat,FALSE,FALSE,FALSE,FALSE,TRUE
+thasanam-boat-noodles,thasanam-spicy-pork,หมูแซ่บนัว,economy,60,unverified,460,34,25,25,thai;spicy;pork,pork;coriander,fish,FALSE,FALSE,FALSE,FALSE,TRUE
+thasanam-boat-noodles,thasanam-spicy-liver,ตับแซ่บนัว,economy,60,unverified,390,31,22,20,thai;spicy;offal,offal;coriander,fish,FALSE,FALSE,FALSE,FALSE,TRUE
+

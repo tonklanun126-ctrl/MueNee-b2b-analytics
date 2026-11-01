@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MueNee B2B Analytics — Executive Command Center</title>
+  
+  <!-- Google Fonts & Chart.js -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Prompt:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    :root {
+      --primary: #0d9488;
+      --primary-dark: #0f766e;
+      --primary-light: #ccfbf1;
+      --navy: #0f172a;
+      --navy-card: #1e293b;
+      --navy-border: #334155;
+      --accent-coral: #f97316;
+      --accent-rose: #ef4444;
+      --accent-green: #10b981;
+      --accent-blue: #3b82f6;
+      --bg-page: #f8fafc;
+      --bg-card: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --font-th: 'Prompt', 'Sarabun', sans-serif;
+      --font-en: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-th);
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Top Banner / Navbar */
+    .top-navbar {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: white;
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .brand-group { display: flex; align-items: center; gap: 14px; }
+    .brand-logo {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #14b8a6, #0d9488);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-family: var(--font-en);
+      font-size: 22px;
+      color: white;
+      box-shadow: 0 0 15px rgba(20, 184, 166, 0.4);
+    }
+    .brand-title h1 {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand-title p {
+      font-size: 13px;
+      color: #94a3b8;
+    }
+
+    /* Layout */
+    .dashboard-container {
+      max-width: 1440px;
+      margin: 24px auto;
+      padding: 0 24px;
+    }
+
+    /* Navigation Tabs */
+    .nav-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 24px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 12px;
+    }
+    .tab-btn {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      font-family: var(--font-th);
+      font-size: 14px;
+      font-weight: 600;
+      color: #475569;
+      padding: 9px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .tab-btn:hover {
+      color: var(--navy);
+      background: #f1f5f9;
+      border-color: #94a3b8;
+    }
+    .tab-btn.active {
+      color: #ffffff;
+      background: #0f172a;
+      border-color: #0f172a;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+    }
+
+    /* KPI Cards Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+    .kpi-card {
+      background: var(--bg-card);
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 22px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .kpi-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+    }
+    .kpi-card.teal::before { background: var(--primary); }
+    .kpi-card.green::before { background: var(--accent-green); }
+    .kpi-card.amber::before { background: var(--accent-coral); }
+    .kpi-card.blue::before { background: var(--accent-blue); }
+    .kpi-title {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .kpi-value {
+      font-family: var(--font-en);
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--navy);
+      margin: 8px 0;
+      letter-spacing: -0.5px;
+    }
+    .kpi-status {
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .kpi-status.positive { color: #059669; }
+    .kpi-status.neutral { color: #2563eb; }
+
+    /* Panels & Charts Grid */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 22px;
+      margin-bottom: 28px;
+    }
+    @media (max-width: 1024px) {
+      .charts-grid { grid-template-columns: 1fr; }
+    }
+    .panel {
+      background: var(--bg-card);
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    }
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .panel-header h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--navy);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .panel-header p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Table Styles */
+    .table-container {
+      overflow-x: auto;
+      margin-top: 10px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    th {
+      background: #f8fafc;
+      color: #475569;
+      font-weight: 700;
+      padding: 12px 14px;
+      text-align: left;
+      border-bottom: 2px solid #e2e8f0;
+    }
+    td {
+      padding: 12px 14px;
+      border-bottom: 1px solid #f1f5f9;
+      color: #334155;
+    }
+    tr:hover td { background: #f8fafc; }
+
+    /* Badges */
+    .tag-quad {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 700;
+      color: white;
+    }
+    .tag-quad.stars { background: #0d9488; }
+    .tag-quad.plow { background: #ea580c; }
+    .tag-quad.puzz { background: #2563eb; }
+    .tag-quad.dogs { background: #dc2626; }
+
+    .traffic-pill {
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      display: inline-block;
+    }
+    .traffic-red { background: #fee2e2; color: #991b1b; }
+    .traffic-amber { background: #fef3c7; color: #92400e; }
+    .traffic-green { background: #d1fae5; color: #065f46; }
+
+    /* Store Selector Bar */
+    .selector-bar {
+      background: white;
+      border: 1px solid #e2e8f0;
+      padding: 16px 20px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .selector-bar label {
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--navy);
+    }
+    .store-select {
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: 1.5px solid #cbd5e1;
+      font-family: var(--font-th);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--navy);
+      background: #f8fafc;
+      min-width: 320px;
+      cursor: pointer;
+      outline: none;
+    }
+    .store-select:focus { border-color: var(--primary); }
+
+    /* Scenario Buttons */
+    .scenario-btn-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .scen-btn {
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: 1.5px solid #cbd5e1;
+      background: white;
+      font-family: var(--font-th);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .scen-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .scen-btn.active {
+      background: #0f172a;
+      color: white;
+      border-color: #0f172a;
+    }
+
+    /* Print View Styles */
+    @media print {
+      .top-navbar, .nav-tabs, .selector-bar, .scenario-btn-group { display: none !important; }
+      body { background: white; color: black; }
+      .panel, .kpi-card { box-shadow: none !important; border: 1px solid #ccc !important; break-inside: avoid; }
+      .dashboard-container { max-width: 100%; margin: 0; padding: 0; }
+      .tab-content { display: block !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Executive Navbar -->
+  <header class="top-navbar">
+    <div class="brand-group">
+      <div class="brand-logo">M</div>
+      <div class="brand-title">
+        <h1>MueNee B2B Analytics <span style="font-size:12px; font-weight:normal; background:rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px;">Executive Command Center</span></h1>
+        <p>ระบบบริหารห่วงโซ่อุปทานและการตัดสินใจ B2B สำหรับ 10 ร้านค้าจริงรอบ ม.ศิลปากร นครปฐม (รัศมี 3.0 กม.)</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="dashboard-container">
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs">
+      <button class="tab-btn active" onclick="switchTab('tab-overview')">📊 ภาพรวมระบบ (System Overview)</button>
+      <button class="tab-btn" onclick="switchTab('tab-stores')">🏪 เจาะลึกร้านค้า & แผนจัดซื้อ (Store Procurement)</button>
+      <button class="tab-btn" onclick="switchTab('tab-menu')">⭐ เมนูวิศวกรรม 4 มิติ (Menu Engineering)</button>
+      <button class="tab-btn" onclick="switchTab('tab-shock')">⚡ แบบจำลองวิกฤตราคา (Price Shock)</button>
+      <button class="tab-btn" onclick="switchTab('tab-growth')">📈 โอกาสเติบโต & คุณภาพข้อมูล (Data Quality & Growth)</button>
+    </nav>
+
+    <!-- TAB 1: SYSTEM OVERVIEW -->
+    <div id="tab-overview" class="tab-content">
+      <!-- 4 Top Executive KPI Cards -->
+      <section class="kpi-grid">
+        <div class="kpi-card teal">
+          <div class="kpi-title">ความแม่นยำพยากรณ์ (Forecast WAPE)</div>
+          <div class="kpi-value">4.00%</div>
+          <div class="kpi-status positive">
+            <span>🟢 Economy: 4.00% | Mid: 9.66% | Premium: 9.24%</span>
+          </div>
+          <p style="font-size:12px; color:#64748b; margin-top:6px;">ผ่านเกณฑ์เป้าหมาย &lt; 10% ทุกกลุ่ม (โมเดล SARIMA_XREG)</p>
+        </div>
+
+        <div class="kpi-card green">
+          <div class="kpi-title">การลดของสดเน่าเสีย (Food Waste Reduction)</div>
+          <div class="kpi-value">-99.49%</div>
+          <div class="kpi-status positive">
+            <span>🟢 ประหยัดวัตถุดิบ 11,437.0 กิโลกรัม</span>
+          </div>
+          <p style="font-size:12px; color:#64748b; margin-top:6px;">Baseline: 11.5 ตัน &rarr; MueNee Policy: 58.8 กก. (เป้า &ge; 20%)</p>
+        </div>
+
+        <div class="kpi-card blue">
+          <div class="kpi-title">อัตราสินค้าขาดสต็อก (Stock-out Rate)</div>
+          <div class="kpi-value">0.78%</div>
+          <div class="kpi-status positive">
+            <span>🟢 Service Level สูงถึง 99.22%</span>
+          </div>
+          <p style="font-size:12px; color:#64748b; margin-top:6px;">ผ่านเกณฑ์ &le; 5.0% ครบทั้ง 50 อนุกรมร้านค้า &times; วัตถุดิบ</p>
+        </div>
+
+        <div class="kpi-card amber">
+          <div class="kpi-title">การปกป้องกำไรขั้นต้น (Margin Protection)</div>
+          <div class="kpi-value">-0.76 pp</div>
+          <div class="kpi-status positive">
+            <span>🟢 เมื่อเนื้อหมูพุ่ง +30% (shock_pork_30)</span>
+          </div>
+          <p style="font-size:12px; color:#64748b; margin-top:6px;">Response Playbook ช่วยลดการสูญเสียกำไรไม่เกิน 3 จุด %</p>
+        </div>
+      </section>
+
+      <!-- Charts Row 1 -->
+      <section class="charts-grid">
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <h3>📈 ยอดพยากรณ์ความต้องการจริงเทียบกับ 95% Confidence Band (Test Set 64 วัน)</h3>
+              <p>อนุกรมเวลาช่วงปิดเทอม 2 และภาคฤดูร้อน (2027-05-29 ถึง 2027-07-31) สะท้อนผลของปฏิทินการศึกษา</p>
+            </div>
+            <span class="badge" style="background:#e0f2fe; color:#0369a1; padding:4px 10px; border-radius:6px; font-weight:700;">Economy Tier</span>
+          </div>
+          <div style="height: 330px;">
+            <canvas id="forecastChart"></canvas>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <h3>🗑️ การลดลงของของสดเน่าเสีย (Food Waste)</h3>
+              <p>เปรียบเทียบ Baseline (สั่งคงที่) vs MueNee Policy</p>
+            </div>
+          </div>
+          <div style="height: 330px;">
+            <canvas id="wasteChart"></canvas>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- TAB 2: STORE INTELLIGENCE & PROCUREMENT -->
+    <div id="tab-stores" class="tab-content" style="display:none;">
+      <!-- Store Selector Bar -->
+      <div class="selector-bar">
+        <label for="storeSelect">เลือกดูข้อมูลร้านค้า (10 ร้านรอบ ม.ศิลปากร):</label>
+        <select id="storeSelect" class="store-select" onchange="renderStoreDetails(this.value)">
+          <!-- Options will be populated by JS -->
+        </select>
+        <div id="storeQuickMeta" style="font-size:13px; color:#64748b;"></div>
+      </div>
+
+      <!-- Store Summary Cards -->
+      <div class="kpi-grid" style="grid-template-columns: repeat(3, 1fr);">
+        <div class="kpi-card teal">
+          <div class="kpi-title">ของสดเน่าเสียลดลง (Food Waste Reduction)</div>
+          <div class="kpi-value" id="storeWasteRed">--%</div>
+          <p id="storeWasteKg" style="font-size:13px; color:#64748b;"></p>
+        </div>
+        <div class="kpi-card blue">
+          <div class="kpi-title">อัตราของขาดสต็อก (Stockout Rate)</div>
+          <div class="kpi-value" id="storeStockout">--%</div>
+          <p style="font-size:13px; color:#059669; font-weight:600;">🟢 ผ่านเกณฑ์มาตรฐาน &le; 5%</p>
+        </div>
+        <div class="kpi-card amber">
+          <div class="kpi-title">สถานะความเชื่อมั่นราคา (Price Confidence)</div>
+          <div class="kpi-value" id="storeConfidence" style="font-size:24px; margin:14px 0;">--</div>
+          <p id="storeConfidenceNote" style="font-size:12px; color:#64748b;"></p>
+        </div>
+      </div>
+
+      <!-- Store Menu & Procurement Tables -->
+      <div class="charts-grid" style="grid-template-columns: 1fr 1fr;">
+        <!-- Menu Analysis -->
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <h3>🍽️ เมนูอาหารประจำร้าน (Menu Performance & Quadrant)</h3>
+              <p>วิเคราะห์ตามทฤษฎี Kasavana & Smith ภายในร้าน (Within-Restaurant N=3)</p>
+            </div>
+          </div>
+          <div class="table-container">
+            <table id="storeMenuTable">
+              <thead>
+                <tr>
+                  <th>ชื่อเมนู</th>
+                  <th>ราคาขาย</th>
+                  <th>Food Cost %</th>
+                  <th>กำไร (CM)</th>
+                  <th>Quadrant</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Procurement Plan Checklist -->
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <h3>📋 แผนการสั่งซื้อวัตถุดิบแนะนำ (Smart Procurement Checklist)</h3>
+              <p>คำนวณด้วย Perishable Cap ป้องกันของเน่าเสีย</p>
+            </div>
+          </div>
+          <div class="table-container">
+            <table id="storePlanTable">
+              <thead>
+                <tr>
+                  <th>กลุ่มวัตถุดิบ</th>
+                  <th>สต็อกคงเหลือ</th>
+                  <th>สั่งแนะนำ (Q*)</th>
+                  <th>สถานะสัญญาณ</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: MENU ENGINEERING MATRIX -->
+    <div id="tab-menu" class="tab-content" style="display:none;">
+      <div class="panel" style="margin-bottom:24px;">
+        <div class="panel-header">
+          <div>
+            <h3>⭐ ผังวิศวกรรมเมนูอาหาร 30 รายการ (Kasavana & Smith Matrix)</h3>
+            <p>แกน X: ความนิยม (Menu Mix %) | แกน Y: กำไรส่วนเกินต่อจาน (Contribution Margin บาท)</p>
+          </div>
+          <div style="font-size:13px; display:flex; gap:12px;">
+            <span><span class="tag-quad stars">⭐ Stars (11)</span> ขายดี+กำไรสูง</span>
+            <span><span class="tag-quad plow">🐴 Plowhorses (15)</span> ขายดีแต่กำไรต่ำ</span>
+            <span><span class="tag-quad puzz">🧩 Puzzles (2)</span> กำไรสูงแต่ขายน้อย</span>
+            <span><span class="tag-quad dogs">🐶 Dogs (2)</span> ขายน้อย+กำไรต่ำ</span>
+          </div>
+        </div>
+        <div style="height: 440px;">
+          <canvas id="quadrantScatterChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Menu Table with Strategic Recommendations -->
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h3>📑 สรุปสถานะและคำแนะนำเชิงกลยุทธ์ทั้ง 30 เมนูอาหาร</h3>
+            <p>คำแนะนำปรับสูตร/ราคา/โปรโมชันตามหลักความอ่อนไหวต่อราคาของนักศึกษา ม.ศิลปากร</p>
+          </div>
+        </div>
+        <div class="table-container">
+          <table id="fullMenuTable">
+            <thead>
+              <tr>
+                <th>ชื่อเมนู</th>
+                <th>ร้านค้า</th>
+                <th>ระดับราคา</th>
+                <th>ราคาขาย</th>
+                <th>ต้นทุน (FC %)</th>
+                <th>กำไร (CM)</th>
+                <th>Quadrant</th>
+                <th>คำแนะนำเชิงปฏิบัติการ (Actionable Recommendation)</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: PRICE SHOCK SIMULATOR -->
+    <div id="tab-shock" class="tab-content" style="display:none;">
+      <div class="panel" style="margin-bottom:24px;">
+        <div class="panel-header">
+          <div>
+            <h3>⚡ แบบจำลองวิกฤตราคาขายส่งตลาดสดนครปฐม (Deterministic Scenarios)</h3>
+            <p>เลือกสถานการณ์เพื่อดูผลกระทบต่อต้นทุนและกำไรขั้นต้นของระบบ</p>
+          </div>
+        </div>
+        <div class="scenario-btn-group" id="scenarioButtons">
+          <!-- Populated by JS -->
+        </div>
+
+        <div class="kpi-grid" style="grid-template-columns: repeat(4, 1fr); margin: 20px 0;">
+          <div class="kpi-card amber">
+            <div class="kpi-title">ความสูญเสียกำไรต่อสัปดาห์</div>
+            <div class="kpi-value" id="scenWeeklyLoss" style="color:#d97706;">--</div>
+            <p style="font-size:12px; color:#64748b;">ผลกระทบรวมทั้ง 10 ร้านค้า</p>
+          </div>
+          <div class="kpi-card amber">
+            <div class="kpi-title">ความสูญเสียตลอดช่วงวิกฤต</div>
+            <div class="kpi-value" id="scenTotalLoss" style="color:#b45309;">--</div>
+            <p id="scenDurationText" style="font-size:12px; color:#64748b;">--</p>
+          </div>
+          <div class="kpi-card teal">
+            <div class="kpi-title">ต้นทุนต่อจานเฉลี่ยเพิ่มขึ้น</div>
+            <div class="kpi-value" id="scenFcDelta">--%</div>
+            <p style="font-size:12px; color:#64748b;">Δ Food Cost % เฉลี่ย</p>
+          </div>
+          <div class="kpi-card green">
+            <div class="kpi-title">สถานะ Response Playbook</div>
+            <div class="kpi-value" style="font-size:20px; margin:14px 0; color:#059669;">Protected</div>
+            <p style="font-size:12px; color:#059669;">กำไรลดลงไม่เกิน 3 จุด %</p>
+          </div>
+        </div>
+
+        <div style="height: 320px;">
+          <canvas id="shockBarChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Monte Carlo Simulation Panel -->
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h3>🎲 การจำลองแบบเฟ้นสุ่ม Monte Carlo 10,000 รอบ (Portfolio Gross Margin Distribution)</h3>
+            <p>การกระจายตัวของกำไรขั้นต้นภายใต้ความผันผวนของราคาสินค้าเกษตรและเนื้อสัตว์ในตลาดสดนครปฐม</p>
+          </div>
+          <div>
+            <span class="badge" style="background:#fee2e2; color:#991b1b; padding:6px 12px; border-radius:6px; font-weight:700;">VaR 95% = 53.96%</span>
+          </div>
+        </div>
+        <p style="font-size:14px; color:#475569; margin-bottom:15px;">
+          ผลการจำลอง 10,000 รอบแสดงว่า <b>ระบบมีกำไรขั้นต้นเฉลี่ย 58.34%</b> (จากฐาน 60.54%) และด้วยระดับความเชื่อมั่น 95% กำไรขั้นต้นของเครือข่ายร้านอาหารจะไม่ลดต่ำกว่า <b>53.96%</b> แม้จะเผชิญกับวิกฤตราคาวัตถุดิบผันผวนพร้อมกันหลายกลุ่ม
+        </p>
+      </div>
+    </div>
+
+    <!-- TAB 5: DATA QUALITY & GROWTH -->
+    <div id="tab-growth" class="tab-content" style="display:none;">
+      <!-- Upside KPI Cards -->
+      <section class="kpi-grid">
+        <div class="kpi-card amber">
+          <div class="kpi-title">โอกาสยอดขายเพิ่มจากการยืนยันสารก่อภูมิแพ้</div>
+          <div class="kpi-value">+฿3,083,950</div>
+          <div class="kpi-status positive">
+            <span>🟢 ปลดล็อกยอดสั่งซื้อ 28,617 จาน/ปี</span>
+          </div>
+          <p style="font-size:12px; color:#64748b; margin-top:6px;">ปัจจุบันทั้ง 30 เมนู allergensKnown: false ทำให้ผู้ใช้แพ้อาหาร (12%) ถูกตัดออกจากระบบ</p>
+        </div>
+
+        <div class="kpi-card teal">
+          <div class="kpi-title">ยอดขายเพิ่มจากการยืนยันราคา (Verification Uplift)</div>
+          <div class="kpi-value">+฿2,717,491</div>
+          <div class="kpi-status positive">
+            <span>🟢 +10.5% Demand Uplift (29,217 จาน/ปี)</span>
+          </div>
+          <p style="font-size:12px; color:#64748b; margin-top:6px;">สำหรับ 15 เมนูใน 5 ร้านค้าที่สถานะเป็น unverified (ลด Choice Penalty)</p>
+        </div>
+
+        <div class="kpi-card green">
+          <div class="kpi-title">มูลค่าปลดล็อกการเติบโตรวมทั้งระบบ (Total B2B Upside)</div>
+          <div class="kpi-value">+฿5,801,441</div>
+          <div class="kpi-status positive">
+            <span>🟢 เพิ่มกระแสเงินสดให้ผู้ประกอบการท้องถิ่น</span>
+          </div>
+          <p style="font-size:12px; color:#64748b; margin-top:6px;">พิสูจน์มูลค่าทางธุรกิจของการเปลี่ยนข้อมูลฟรีฝั่ง B2C เป็นสินทรัพย์ข้อมูลฝั่ง B2B</p>
+        </div>
+      </section>
+
+      <!-- Growth Chart -->
+      <div class="panel">
+        <div class="panel-header" style="flex-direction:column; align-items:flex-start; gap:8px;">
+          <div>
+            <h3>💰 โอกาสการเพิ่มรายได้รายปีแยกตามร้านค้า (Annual Revenue Upside by Restaurant)</h3>
+            <p>มูลค่าที่จะได้รับเพิ่มขึ้นจากการยืนยันสารก่อภูมิแพ้ และการยืนยันราคาขายหน้าร้านบนแพลตฟอร์ม</p>
+          </div>
+          <div style="font-size:13px; color:#475569; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:10px 14px; width:100%; box-sizing:border-box;">
+            💡 <b>คำอธิบายสัญลักษณ์และข้อมูลในกราฟ:</b>
+            <ul style="margin-left:18px; margin-top:4px; line-height:1.6;">
+              <li><span style="color:#f97316; font-weight:700;">แถบสีส้ม (Allergen Verification):</span> มีในทุกร้านค้า (30 เมนู) จากการปลดล็อกระบบกรองสารก่อภูมิแพ้ (+12% Demand)</li>
+              <li><span style="color:#0d9488; font-weight:700;">แถบสีเขียว (Price Verification Uplift):</span> แสดงเฉพาะใน <b>5 ร้านค้าที่รอยืนยันราคา [Unverified ⏳]</b> ซึ่งจะได้ยอดขายเพิ่มกลับคืนมา +10.5% (ลด Choice Penalty) ส่วนอีก 5 ร้านค้ามีสถานะ <b>[Verified ✅]</b> ยืนยันราคาถูกต้องอยู่แล้วตั้งแต่ต้น จึงได้รับยอดขายเต็ม 100% อยู่แล้ว (Uplift = ฿0)</li>
+            </ul>
+          </div>
+        </div>
+        <div style="height: 480px;">
+          <canvas id="growthBarChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer style="text-align:center; padding:35px 20px; color:#64748b; font-size:13px; border-top:1px solid #e2e8f0; margin-top:40px; background:white;">
+    <p><b>MueNee B2B Analytics Platform</b> &bull; ระบบบริหารห่วงโซ่อุปทานและการตัดสินใจ B2B ระดับ Production-Grade</p>
+  </footer>
+
+  <!-- EMBEDDED REAL PIPELINE DATA -->
+  <script>
+    const PIPELINE_DATA = {"restaurants": [{"id": "bonchon-sanamchan", "name": "Bonchon Sanamchan Nakornpathom", "tier": "premium_social", "confidence": "verified", "waste_reduction_pct": 98.4, "stockout_rate": 0.62, "baseline_waste_kg": 394.6, "muenee_waste_kg": 9.8, "menus": [{"menu_item_id": "bonchon-wings-6", "menu_name_th": "ปีกไก่บอนชอน 6 ชิ้น", "restaurant_id": "bonchon-sanamchan", "restaurant_name": "Bonchon Sanamchan Nakornpathom", "price_tier": "premium_social", "price_confidence": "verified", "selling_price_thb": 199, "food_cost_thb": 35.29, "food_cost_pct": 17.73, "target_food_cost_pct": 35, "food_cost_exceeds_target": false, "contribution_margin_thb": 163.71, "total_orders": 5248, "menu_mix_restaurant_pct": 33.78, "quadrant_within_restaurant": "Plowhorses", "menu_mix_tier_pct": 9.85, "quadrant_within_tier": "Plowhorses", "total_revenue_thb": 1044352, "total_cm_thb": 859150.08, "strategic_recommendation": "🐴 ม้างาน (ขายดีมากแต่กำไรต่ำ): ปรับสัดส่วนวัตถุดิบแพง เพิ่มคาร์บหรือผัก ปรับขึ้นราคา 3-5 บาทแบบค่อยเป็นค่อยไป หรือจับคู่ Bundle กับเมนูกำไรสูง"}, {"menu_item_id": "bonchon-chicken-rice-soy-garlic", "menu_name_th": "ชุดข้าวกล่องไก่บอนชอน ซอยการ์ลิค", "restaurant_id": "bonchon-sanamchan", "restaurant_name": "Bonchon Sanamchan Nakornpathom", "price_tier": "premium_social", "price_confidence": "verified", "selling_price_thb": 229, "food_cost_thb": 25.4, "food_cost_pct": 11.09, "target_food_cost_pct": 35, "food_cost_exceeds_target": false, "contribution_margin_thb": 203.6, "total_orders": 5184, "menu_mix_restaurant_pct": 33.37, "quadrant_within_restaurant": "Stars", "menu_mix_tier_pct": 9.73, "quadrant_within_tier": "Plowhorses", "total_revenue_thb": 1187136, "total_cm_thb": 1055462.4, "strategic_recommendation": "⭐ เมนูดาวเด่น (ขายดี+กำไรสูง): รักษาสูตร คุณภาพ และตำแหน่งในเมนู เป็นตัวชูโรงสร้างกระแสเงินสด ไม่ควรขึ้นราคาหากไม่จำเป็น"}, {"menu_item_id": "bonchon-fish-rice-hot", "menu_name_th": "ชุดข้าวกล่องปลาทอดบอนชอน ฮอท", "restaurant_id": "bonchon-sanamchan", "restaurant_name": "Bonchon Sanamchan Nakornpathom", "price_tier": "premium_social", "price_confidence": "verified", "selling_price_thb": 259, "food_cost_thb": 31.95, "food_cost_pct": 12.34, "target_food_cost_pct": 35, "food_cost_exceeds_target": false, "contribution_margin_thb": 227.05, "total_orders": 5103, "menu_mix_restaurant_pct": 32.85, "quadrant_within_restaurant": "Stars", "menu_mix_tier_pct": 9.58, "quadrant_within_tier": "Plowhorses", "total_revenue_thb": 1321677, "total_cm_thb": 1158636.15, "strategic_recommendation": "⭐ เมนูดาวเด่น (ขายดี+กำไรสูง): รักษาสูตร คุณภาพ และตำแหน่งในเมนู เป็นตัวชูโรงสร้างกระแสเงินสด ไม่ควรขึ้นราคาหากไม่จำเป็น"}], "procurement_plan": [{"commodity_group_name": "carb_base", "date": "2027-07-31", "restaurant_id": "bonchon-sanamchan", "academic_period": "semester_break", "actual_demand_kg": 2.48, "ending_inventory_kg": 3.62, "safety_stock_kg": 3.62, "reorder_point_kg": 13.96, "order_quantity_kg": 2.01}, {"commodity_group_name": "fresh_veg_herbs", "date": "2027-07-31", "restaurant_id": "bonchon-sanamchan", "academic_period": "semester_break", "actual_demand_kg": 1.07, "ending_inventory_kg": 0.0, "safety_stock_kg": 0.39, "reorder_point_kg": 1.04, "order_quantity_kg": 1.07}, {"commodity_group_name": "poultry", "date": "2027-07-31", "restaurant_id": "bonchon-sanamchan", "academic_period": "semester_break", "actual_demand_kg": 3.56, "ending_inventory_kg": 1.83, "safety_stock_kg": 1.83, "reorder_point_kg": 4.24, "order_quantity_kg": 3.56}, {"commodity_group_name": "sauce_seasoning", "date": "2027-07-31", "restaurant_id": "bonchon-sanamchan", "academic_period": "semester_break", "actual_demand_kg": 0.83, "ending_inventory_kg": 2.12, "safety_stock_kg": 1.74, "reorder_point_kg": 9.02, "order_quantity_kg": 0.4}, {"commodity_group_name": "seafood", "date": "2027-07-31", "restaurant_id": "bonchon-sanamchan", "academic_period": "semester_break", "actual_demand_kg": 1.3, "ending_inventory_kg": 0.84, "safety_stock_kg": 0.84, "reorder_point_kg": 2.24, "order_quantity_kg": 1.3}]}, {"id": "good-food-nakhon-pathom", "name": "Good Food", "tier": "economy", "confidence": "unverified", "waste_reduction_pct": 99.7, "stockout_rate": 1.3, "baseline_waste_kg": 697.2, "muenee_waste_kg": 2.2, "menus": [{"menu_item_id": "good-food-banana-oat-loaf", "menu_name_th": "โลฟโอ๊ตกล้วยน้ำว้า", "restaurant_id": "good-food-nakhon-pathom", "restaurant_name": "Good Food", "price_tier": "economy", "price_confidence": "unverified", "selling_price_thb": 59, "food_cost_thb": 6.27, "food_cost_pct": 10.63, "target_food_cost_pct": 45, "food_cost_exceeds_target": false, "contribution_margin_thb": 52.73, "total_orders": 31817, "menu_mix_restaurant_pct": 57.42, "quadrant_within_restaurant": "Plowhorses", "menu_mix_tier_pct": 9.44, "quadrant_within_tier": "Stars", "total_revenue_thb": 1877203, "total_cm_thb": 1677710.41, "strategic_recommendation": "🐴 ม้างาน (ขายดีมากแต่กำไรต่ำ): ปรับสัดส่วนวัตถุดิบแพง เพิ่มคาร์บหรือผัก ปรับขึ้นราคา 3-5 บาทแบบค่อยเป็นค่อยไป หรือจับคู่ Bundle กับเมนูกำไรสูง"}, {"menu_item_id": "good-food-salmon-salad-rice", "menu_name_th": "Salad Rice Salmon", "restaurant_id": "good-food-nakhon-pathom", "restaurant_name": "Good Food", "price_tier": "mid", "price_confidence": "unverified", "selling_price_thb": 159, "food_cost_thb": 110.42, "food_cost_pct": 69.45, "target_food_cost_pct": 40, "food_cost_exceeds_target": true, "contribution_margin_thb": 48.58, "total_orders": 11872, "menu_mix_restaurant_pct": 21.42, "quadrant_within_restaurant": "Dogs", "menu_mix_tier_pct": 9.93, "quadrant_within_tier": "Plowhorses", "total_revenue_thb": 1887648, "total_cm_thb": 576741.76, "strategic_recommendation": "🐶 สุนัขเฝ้าบ้าน (ขายน้อย+กำไรต่ำ+ต้นทุนเกินเป้า): เป็นเมนูเปราะบางสูงสุด ควรปรับสูตรขนานใหญ่ หรือพิจารณาตัดออกจากเมนูหลักแล้วขายเฉพาะช่วงเทศกาล"}, {"menu_item_id": "good-food-custom-sandwich", "menu_name_th": "แซนด์วิชเลือกไส้", "restaurant_id": "good-food-nakhon-pathom", "restaurant_name": "Good Food", "price_tier": "mid", "price_confidence": "unverified", "selling_price_thb": 109, "food_cost_thb": 23.51, "food_cost_pct": 21.57, "target_food_cost_pct": 40, "food_cost_exceeds_target": false, "contribution_margin_thb": 85.49, "total_orders": 11723, "menu_mix_restaurant_pct": 21.16, "quadrant_within_restaurant": "Puzzles", "menu_mix_tier_pct": 9.8, "quadrant_within_tier": "Stars", "total_revenue_thb": 1277807, "total_cm_thb": 1002199.27, "strategic_recommendation": "🧩 ปริศนา (กำไรดีมากแต่ยอดขายน้อย): เร่งโปรโมชัน เพิ่มการมองเห็นในแอป MueNee ตรวจสอบและยืนยันข้อมูลราคา (Verified) และสารก่อภูมิแพ้เพื่อปลดล็อกฟิลเตอร์ผู้ใช้"}], "procurement_plan": [{"commodity_group_name": "carb_base", "date": "2027-07-31", "restaurant_id": "good-food-nakhon-pathom", "academic_period": "semester_break", "actual_demand_kg": 2.94, "ending_inventory_kg": 2.43, "safety_stock_kg": 2.43, "reorder_point_kg": 23.16, "order_quantity_kg": 2.23}, {"commodity_group_name": "egg_and_tofu", "date": "2027-07-31", "restaurant_id": "good-food-nakhon-pathom", "academic_period": "semester_break", "actual_demand_kg": 1.33, "ending_inventory_kg": 0.99, "safety_stock_kg": 0.89, "reorder_point_kg": 3.5, "order_quantity_kg": 1.23}, {"commodity_group_name": "fresh_veg_herbs", "date": "2027-07-31", "restaurant_id": "good-food-nakhon-pathom", "academic_period": "semester_break", "actual_demand_kg": 4.2, "ending_inventory_kg": 0.78, "safety_stock_kg": 0.78, "reorder_point_kg": 5.01, "order_quantity_kg": 4.2}, {"commodity_group_name": "poultry", "date": "2027-07-31", "restaurant_id": "good-food-nakhon-pathom", "academic_period": "semester_break", "actual_demand_kg": 0.45, "ending_inventory_kg": 0.33, "safety_stock_kg": 0.33, "reorder_point_kg": 0.8, "order_quantity_kg": 0.45}, {"commodity_group_name": "sauce_seasoning", "date": "2027-07-31", "restaurant_id": "good-food-nakhon-pathom", "academic_period": "semester_break", "actual_demand_kg": 0.98, "ending_inventory_kg": 1.61, "safety_stock_kg": 1.47, "reorder_point_kg": 15.2, "order_quantity_kg": 0.85}, {"commodity_group_name": "seafood", "date": "2027-07-31", "restaurant_id": "good-food-nakhon-pathom", "academic_period": "semester_break", "actual_demand_kg": 1.33, "ending_inventory_kg": 0.0, "safety_stock_kg": 0.74, "reorder_point_kg": 3.84, "order_quantity_kg": 1.33}]}, {"id": "hinn-red-pork-rice", "name": "ร้านฮิ้น ข้าวหมูแดง", "tier": "economy", "confidence": "unverified", "waste_reduction_pct": 100.0, "stockout_rate": 0.78, "baseline_waste_kg": 1633.5, "muenee_waste_kg": 0.0, "menus": [{"menu_item_id": "hinn-roast-duck-rice", "menu_name_th": "ข้าวหน้าเป็ด", "restaurant_id": "hinn-red-pork-rice", "restaurant_name": "ร้านฮิ้น ข้าวหมูแดง", "price_tier": "economy", "price_confidence": "unverified", "selling_price_thb": 60, "food_cost_thb": 33.26, "food_cost_pct": 55.43, "target_food_cost_pct": 45, "food_cost_exceeds_target": true, "contribution_margin_thb": 26.74, "total_orders": 32303, "menu_mix_restaurant_pct": 34.03, "quadrant_within_restaurant": "Plowhorses", "menu_mix_tier_pct": 9.58, "quadrant_within_tier": "Plowhorses", "total_revenue_thb": 1938180, "total_cm_thb": 863782.22, "strategic_recommendation": "🐴 ม้างาน (ขายดีมากแต่กำไรต่ำ): ปรับสัดส่วนวัตถุดิบแพง เพิ่มคาร์บหรือผัก ปรับขึ้นราคา 3-5 บาทแบบค่อยเป็นค่อยไป หรือจับคู่ Bundle กับเมนูกำไรสูง"}, {"menu_item_id": "hinn-red-pork-rice", "menu_name_th": "ข้าวหมูแดง", "restaurant_id": "hinn-red-pork-rice", "restaurant_name": "ร้านฮิ้น ข้าวหมูแดง", "price_tier": "economy", "price_confidence": "unverified", "selling_price_thb": 60, "food_cost_thb": 21.25, "food_cost_pct": 35.42, "target_food_cost_pct": 45, "food_cost_exceeds_target": false, "contribution_margin_thb": 38.75, "total_orders": 31534, "menu_mix_restaurant_pct": 33.22, "quadrant_within_restaurant": "Stars", "menu_mix_tier_pct": 9.35, "quadrant_within_tier": "Stars", "total_revenue_thb": 1892040, "total_cm_thb": 1221942.5, "strategic_recommendation": "⭐ เมนูดาวเด่น (ขายดี+กำไรสูง): รักษาสูตร คุณภาพ และตำแหน่งในเมนู เป็นตัวชูโรงสร้างกระแสเงินสด ไม่ควรขึ้นราคาหากไม่จำเป็น"}, {"menu_item_id": "hinn-crispy-pork-rice", "menu_name_th": "ข้าวหมูกรอบ", "restaurant_id": "hinn-red-pork-rice", "restaurant_name": "ร้านฮิ้น ข้าวหมูแดง", "price_tier": "economy", "price_confidence": "unverified", "selling_price_thb": 60, "food_cost_thb": 30.3, "food_cost_pct": 50.5, "target_food_cost_pct": 45, "food_cost_exceeds_target": true, "contribution_margin_thb": 29.7, "total_orders": 31083, "menu_mix_restaurant_pct": 32.75, "quadrant_within_restaurant": "Plowhorses", "menu_mix_tier_pct": 9.22, "quadrant_within_tier": "Plowhorses", "total_revenue_thb": 1864980, "total_cm_thb": 923165.1, "strategic_recommendation": "🐴 ม้างาน (ขายดีมากแต่กำไรต่ำ): ปรับสัดส่วนวัตถุดิบแพง เพิ่มคาร์บหรือผัก ปรับขึ้นราคา 3-5 บาทแบบค่อยเป็นค่อยไป หรือจับคู่ Bundle กับเมนูกำไรสูง"}], "procurement_plan": [{"commodity_group_name": "carb_base", "date": "2027-07-31", "restaurant_id": "hinn-red-pork-rice", "academic_period": "semester_break", "actual_demand_kg": 7.88, "ending_inventory_kg": 6.51, "safety_stock_kg": 6.51, "reorder_point_kg": 68.77, "order_quantity_kg": 4.92}, {"commodity_group_name": "egg_and_tofu", "date": "2027-07-31", "restaurant_id": "hinn-red-pork-rice", "academic_period": "semester_break", "actual_demand_kg": 4.71, "ending_inventory_kg": 3.03, "safety_stock_kg": 2.08, "reorder_point_kg": 12.72, "order_quantity_kg": 3.76}, {"commodity_group_name": "fresh_veg_herbs", "date": "2027-07-31", "restaurant_id": "hinn-red-pork-rice", "academic_period": "semester_break", "actual_demand_kg": 2.08, "ending_inventory_kg": 0.42, "safety_stock_kg": 0.42, "reorder_point_kg": 2.76, "order_quantity_kg": 2.08}, {"commodity_group_name": "pork_and_cuts", "date": "2027-07-31", "restaurant_id": "hinn-red-pork-rice", "academic_period": "semester_break", "actual_demand_kg": 4.89, "ending_inventory_kg": 1.62, "safety_stock_kg": 1.62, "reorder_point_kg": 8.31, "order_quantity_kg": 4.89}, {"commodity_group_name": "poultry", "date": "2027-07-31", "restaurant_id": "hinn-red-pork-rice", "academic_period": "semester_break", "actual_demand_kg": 7.6, "ending_inventory_kg": 2.19, "safety_stock_kg": 2.19, "reorder_point_kg": 8.61, "order_quantity_kg": 7.6}, {"commodity_group_name": "sauce_seasoning", "date": "2027-07-31", "restaurant_id": "hinn-red-pork-rice", "academic_period": "semester_break", "actual_demand_kg": 3.54, "ending_inventory_kg": 6.78, "safety_stock_kg": 4.18, "reorder_point_kg": 60.92, "order_quantity_kg": 0.95}]}, {"id": "kinkane-89", "name": "KinKane 89", "tier": "premium_social", "confidence": "unverified", "waste_reduction_pct": 98.4, "stockout_rate": 0.0, "baseline_waste_kg": 263.8, "muenee_waste_kg": 9.5, "menus": [{"menu_item_id": "kinkane-hamachi-sashimi", "menu_name_th": "ฮามาจิซาชิมิ", "restaurant_id": "kinkane-89", "restaurant_name": "KinKane 89", "price_tier": "premium_social", "price_confidence": "unverified", "selling_price_thb": 280, "food_cost_thb": 151.57, "food_cost_pct": 54.13, "target_food_cost_pct": 35, "food_cost_exceeds_target": true, "contribution_margin_thb": 128.43, "total_orders": 4447, "menu_mix_restaurant_pct": 33.54, "quadrant_within_restaurant": "Stars", "menu_mix_tier_pct": 8.35, "quadrant_within_tier": "Plowhorses", "total_revenue_thb": 1245160, "total_cm_thb": 571128.21, "strategic_recommendation": "⭐ เมนูดาวเด่น (ขายดี+กำไรสูง) แต่ Food Cost เกินเพดานเป้าหมาย: ควรรักษาตำแหน่งเมนู ลดต้นทุนด้วยการเจรจาซื้อวัตถุดิบร่วมหรือปรับลดขนาดผักตกแต่ง ห้ามขึ้นราคาเด็ดขาด"}, {"menu_item_id": "kinkane-scallop-sashimi", "menu_name_th": "โฮตาเตะซาชิมิ", "restaurant_id": "kinkane-89", "restaurant_name": "KinKane 89", "price_tier": "premium_social", "price_confidence": "unverified", "selling_price_thb": 250, "food_cost_thb": 183.27, "food_cost_pct": 73.31, "target_food_cost_pct": 35, "food_cost_exceeds_target": true, "contribution_margin_thb": 66.73, "total_orders": 4408, "menu_mix_restaurant_pct": 33.25, "quadrant_within_restaurant": "Plowhorses", "menu_mix_tier_pct": 8.28, "quadrant_within_tier": "Plowhorses", "total_revenue_thb": 1102000, "total_cm_thb": 294145.84, "strategic_recommendation": "🐴 ม้างาน (ขายดีมากแต่กำไรต่ำ): ปรับสัดส่วนวัตถุดิบแพง เพิ่มคาร์บหรือผัก ปรับขึ้นราคา 3-5 บาทแบบค่อยเป็นค่อยไป หรือจับคู่ Bundle กับเมนูกำไรสูง"}, {"menu_item_id": "kinkane-salmon-sashimi", "menu_name_th": "แซลมอนซาชิมิ", "restaurant_id": "kinkane-89", "restaurant_name": "KinKane 89", "price_tier": "premium_social", "price_confidence": "unverified", "selling_price_thb": 220, "food_cost_thb": 109.31, "food_cost_pct": 49.69, "target_food_cost_pct": 35, "food_cost_exceeds_target": true, "contribution_margin_thb": 110.69, "total_orders": 4403, "menu_mix_restaurant_pct": 33.21, "quadrant_within_restaurant": "Stars", "menu_mix_tier_pct": 8.27, "quadrant_within_tier": "Plowhorses", "total_revenue_thb": 968660, "total_cm_thb": 487368.07, "strategic_recommendation": "⭐ เมนูดาวเด่น (ขายดี+กำไรสูง) แต่ Food Cost เกินเพดานเป้าหมาย: ควรรักษาตำแหน่งเมนู ลดต้นทุนด้วยการเจรจาซื้อวัตถุดิบร่วมหรือปรับลดขนาดผักตกแต่ง ห้ามขึ้นราคาเด็ดขาด"}], "procurement_plan": [{"commodity_group_name": "fresh_veg_herbs", "date": "2027-07-31", "restaurant_id": "kinkane-89", "academic_period": "semester_break", "actual_demand_kg": 0.3, "ending_inventory_kg": 0.26, "safety_stock_kg": 0.26, "reorder_point_kg": 0.51, "order_quantity_kg": 0.3}, {"commodity_group_name": "sauce_seasoning", "date": "2027-07-31", "restaurant_id": "kinkane-89", "academic_period": "semester_break", "actual_demand_kg": 0.16, "ending_inventory_kg": 1.47, "safety_stock_kg": 1.47, "reorder_point_kg": 3.29, "order_quantity_kg": 0.16}, {"commodity_group_name": "seafood", "date": "2027-07-31", "restaurant_id": "kinkane-89", "academic_period": "semester_break", "actual_demand_kg": 2.52, "ending_inventory_kg": 0.54, "safety_stock_kg": 1.62, "reorder_point_kg": 5.78, "order_quantity_kg": 2.52}]}, {"id": "loong-loy-pa-lan", "name": "ลุงลอยป่าลั่น", "tier": "mid", "confidence": "verified", "waste_reduction_pct": 99.6, "stockout_rate": 0.26, "baseline_waste_kg": 1026.0, "muenee_waste_kg": 6.6, "menus": [{"menu_item_id": "loong-loy-jungle-catfish-curry", "menu_name_th": "แกงป่าปลาบึก ชาม", "restaurant_id": "loong-loy-pa-lan", "restaurant_name": "ลุงลอยป่าลั่น", "price_tier": "mid", "price_confidence": "verified", "selling_price_thb": 80, "food_cost_thb": 42.03, "food_cost_pct": 52.54, "target_food_cost_pct": 40, "food_cost_exceeds_target": true, "contribution_margin_thb": 37.97, "total_orders": 14777, "menu_mix_restaurant_pct": 33.92, "quadrant_within_restaurant": "Plowhorses", "menu_mix_tier_pct": 12.36, "quadrant_within_tier": "Plowhorses", "total_revenue_thb": 1182160, "total_cm_thb": 561082.69, "strategic_recommendation": "🐴 ม้างาน (ขายดีมากแต่กำไรต่ำ): ปรับสัดส่วนวัตถุดิบแพง เพิ่มคาร์บหรือผัก ปรับขึ้นราคา 3-5 บาทแบบค่อยเป็นค่อยไป หรือจับคู่ Bundle กับเมนูกำไรสูง"}, {"menu_item_id": "loong-loy-large-crab-fried-rice", "menu_name_th": "ข้าวผัดปู ใหญ่", "restaurant_id": "loong-loy-pa-lan", "restaurant_name": "ลุงลอยป่าลั่น", "price_tier": "mid", "price_confidence": "verified", "selling_price_thb": 150, "food_cost_thb": 90.26, "food_cost_pct": 60.17, "target_food_cost_pct": 40, "food_cost_exceeds_target": true, "contribution_margin_thb": 59.74, "total_orders": 14573, "menu_mix_restaurant_pct": 33.45, "quadrant_within_restaurant": "Stars", "menu_mix_tier_pct": 12.19, "quadrant_within_tier": "Plowhorses", "total_revenue_thb": 2185950, "total_cm_thb": 870591.02, "strategic_recommendation": "⭐ เมนูดาวเด่น (ขายดี+กำไรสูง) แต่ Food Cost เกินเพดานเป้าหมาย: ควรรักษาตำแหน่งเมนู ลดต้นทุนด้วยการเจรจาซื้อวัตถุดิบร่วมหรือปรับลดขนาดผักตกแต่ง ห้ามขึ้นราคาเด็ดขาด"}, {"menu_item_id": "loong-loy-tofu-pork-soup", "menu_name_th": "แกงจืดเต้าหู้หมูสับ เล็ก", "restaurant_id": "loong-loy-pa-lan", "restaurant_name": "ลุงลอยป่าลั่น", "price_tier": "mid", "price_confidence": "verified", "selling_price_thb": 80, "food_cost_thb": 23.81, "food_cost_pct": 29.76, "target_food_cost_pct": 40, "food_cost_exceeds_target": false, "contribution_margin_thb": 56.19, "total_orders": 14219, "menu_mix_restaurant_pct": 32.64, "quadrant_within_restaurant": "Stars", "menu_mix_tier_pct": 11.89, "quadrant_within_tier": "Plowhorses", "total_revenue_thb": 1137520, "total_cm_thb": 798965.61, "strategic_recommendation": "⭐ เมนูดาวเด่น (ขายดี+กำไรสูง): รักษาสูตร คุณภาพ และตำแหน่งในเมนู เป็นตัวชูโรงสร้างกระแสเงินสด ไม่ควรขึ้นราคาหากไม่จำเป็น"}], "procurement_plan": [{"commodity_group_name": "carb_base", "date": "2027-07-31", "restaurant_id": "loong-loy-pa-lan", "academic_period": "semester_break", "actual_demand_kg": 2.38, "ending_inventory_kg": 3.43, "safety_stock_kg": 3.43, "reorder_point_kg": 27.71, "order_quantity_kg": 0.72}, {"commodity_group_name": "egg_and_tofu", "date": "2027-07-31", "restaurant_id": "loong-loy-pa-lan", "academic_period": "semester_break", "actual_demand_kg": 3.85, "ending_inventory_kg": 2.59, "safety_stock_kg": 2.59, "reorder_point_kg": 14.09, "order_quantity_kg": 3.85}, {"commodity_group_name": "fresh_veg_herbs", "date": "2027-07-31", "restaurant_id": "loong-loy-pa-lan", "academic_period": "semester_break", "actual_demand_kg": 8.46, "ending_inventory_kg": 1.93, "safety_stock_kg": 1.93, "reorder_point_kg": 12.37, "order_quantity_kg": 8.46}, {"commodity_group_name": "pork_and_cuts", "date": "2027-07-31", "restaurant_id": "loong-loy-pa-lan", "academic_period": "semester_break", "actual_demand_kg": 1.25, "ending_inventory_kg": 0.68, "safety_stock_kg": 0.68, "reorder_point_kg": 2.58, "order_quantity_kg": 1.25}, {"commodity_group_name": "sauce_seasoning", "date": "2027-07-31", "restaurant_id": "loong-loy-pa-lan", "academic_period": "semester_break", "actual_demand_kg": 1.79, "ending_inventory_kg": 2.34, "safety_stock_kg": 2.28, "reorder_point_kg": 34.05, "order_quantity_kg": 1.73}, {"commodity_group_name": "seafood", "date": "2027-07-31", "restaurant_id": "loong-loy-pa-lan", "academic_period": "semester_break", "actual_demand_kg": 6.04, "ending_inventory_kg": 0.29, "safety_stock_kg": 2.04, "reorder_point_kg": 16.44, "order_quantity_kg": 6.04}]}, {"id": "madam-ho-sanamchan", "name": "มาดามโฮ เฝอหม้อไฟ หน้า ม.ศิลปากร นครปฐม", "tier": "premium_social", "confidence": "verified", "waste_reduction_pct": 99.7, "stockout_rate": 0.31, "baseline_waste_kg": 726.7, "muenee_waste_kg": 4.9, "menus": [{"menu_item_id": "madam-ho-paper-pot-pho", "menu_name_th": "เฝอหม้อกระดาษ", "restaurant_id": "madam-ho-sanamchan", "restaurant_name": "มาดามโฮ เฝอหม้อไฟ หน้า ม.ศิลปากร นครปฐม", "price_tier": "premium_social", "price_confidence": "verified", "selling_price_thb": 399, "food_cost_thb": 42.17, "food_cost_pct": 10.57, "target_food_cost_pct": 35, "food_cost_exceeds_target": false, "contribution_margin_thb": 356.83, "total_orders": 5239, "menu_mix_restaurant_pct": 33.67, "quadrant_within_restaurant": "Plowhorses", "menu_mix_tier_pct": 9.84, "quadrant_within_tier": "Stars", "total_revenue_thb": 2090361, "total_cm_thb": 1869432.37, "strategic_recommendation": "🐴 ม้างาน (ขายดีมากแต่กำไรต่ำ): ปรับสัดส่วนวัตถุดิบแพง เพิ่มคาร์บหรือผัก ปรับขึ้นราคา 3-5 บาทแบบค่อยเป็นค่อยไป หรือจับคู่ Bundle กับเมนูกำไรสูง"}, {"menu_item_id": "madam-ho-pork-crunch-set", "menu_name_th": "ชุดหมูกรุบกริบ", "restaurant_id": "madam-ho-sanamchan", "restaurant_name": "มาดามโฮ เฝอหม้อไฟ หน้า ม.ศิลปากร นครปฐม", "price_tier": "premium_social", "price_confidence": "verified", "selling_price_thb": 359, "food_cost_thb": 55.41, "food_cost_pct": 15.43, "target_food_cost_pct": 35, "food_cost_exceeds_target": false, "contribution_margin_thb": 303.59, "total_orders": 5189, "menu_mix_restaurant_pct": 33.34, "quadrant_within_restaurant": "Plowhorses", "menu_mix_tier_pct": 9.74, "quadrant_within_tier": "Stars", "total_revenue_thb": 1862851, "total_cm_thb": 1575328.51, "strategic_recommendation": "🐴 ม้างาน (ขายดีมากแต่กำไรต่ำ): ปรับสัดส่วนวัตถุดิบแพง เพิ่มคาร์บหรือผัก ปรับขึ้นราคา 3-5 บาทแบบค่อยเป็นค่อยไป หรือจับคู่ Bundle กับเมนูกำไรสูง"}, {"menu_item_id": "madam-ho-soft-pork-heart-set", "menu_name_th": "ชุดหมูขนุ้มหัวใจ", "restaurant_id": "madam-ho-sanamchan", "restaurant_name": "มาดามโฮ เฝอหม้อไฟ หน้า ม.ศิลปากร นครปฐม", "price_tier": "premium_social", "price_confidence": "verified", "selling_price_thb": 499, "food_cost_thb": 64.55, "food_cost_pct": 12.94, "target_food_cost_pct": 35, "food_cost_exceeds_target": false, "contribution_margin_thb": 434.45, "total_orders": 5134, "menu_mix_restaurant_pct": 32.99, "quadrant_within_restaurant": "Stars", "menu_mix_tier_pct": 9.64, "quadrant_within_tier": "Stars", "total_revenue_thb": 2561866, "total_cm_thb": 2230466.3, "strategic_recommendation": "⭐ เมนูดาวเด่น (ขายดี+กำไรสูง): รักษาสูตร คุณภาพ และตำแหน่งในเมนู เป็นตัวชูโรงสร้างกระแสเงินสด ไม่ควรขึ้นราคาหากไม่จำเป็น"}], "procurement_plan": [{"commodity_group_name": "carb_base", "date": "2027-07-31", "restaurant_id": "madam-ho-sanamchan", "academic_period": "semester_break", "actual_demand_kg": 2.05, "ending_inventory_kg": 3.18, "safety_stock_kg": 3.18, "reorder_point_kg": 12.87, "order_quantity_kg": 1.69}, {"commodity_group_name": "egg_and_tofu", "date": "2027-07-31", "restaurant_id": "madam-ho-sanamchan", "academic_period": "semester_break", "actual_demand_kg": 1.22, "ending_inventory_kg": 1.09, "safety_stock_kg": 1.0, "reorder_point_kg": 2.6, "order_quantity_kg": 1.13}, {"commodity_group_name": "fresh_veg_herbs", "date": "2027-07-31", "restaurant_id": "madam-ho-sanamchan", "academic_period": "semester_break", "actual_demand_kg": 5.14, "ending_inventory_kg": 1.91, "safety_stock_kg": 1.91, "reorder_point_kg": 5.2, "order_quantity_kg": 5.14}, {"commodity_group_name": "pork_and_cuts", "date": "2027-07-31", "restaurant_id": "madam-ho-sanamchan", "academic_period": "semester_break", "actual_demand_kg": 6.34, "ending_inventory_kg": 2.99, "safety_stock_kg": 2.99, "reorder_point_kg": 6.9, "order_quantity_kg": 6.34}, {"commodity_group_name": "sauce_seasoning", "date": "2027-07-31", "restaurant_id": "madam-ho-sanamchan", "academic_period": "semester_break", "actual_demand_kg": 1.5, "ending_inventory_kg": 4.15, "safety_stock_kg": 3.22, "reorder_point_kg": 16.97, "order_quantity_kg": 0.57}]}, {"id": "pa-ja-23-hours", "name": "ข้าวมันไก่ป้าจ๋า 23 ชั่วโมง", "tier": "economy", "confidence": "verified", "waste_reduction_pct": 100.0, "stockout_rate": 1.56, "baseline_waste_kg": 2456.2, "muenee_waste_kg": 0.0, "menus": [{"menu_item_id": "pa-ja-boiled-chicken-rice", "menu_name_th": "ข้าวไก่ต้ม", "restaurant_id": "pa-ja-23-hours", "restaurant_name": "ข้าวมันไก่ป้าจ๋า 23 ชั่วโมง", "price_tier": "economy", "price_confidence": "verified", "selling_price_thb": 59, "food_cost_thb": 18.52, "food_cost_pct": 31.39, "target_food_cost_pct": 45, "food_cost_exceeds_target": false, "contribution_margin_thb": 40.48, "total_orders": 38927, "menu_mix_restaurant_pct": 33.48, "quadrant_within_restaurant": "Plowhorses", "menu_mix_tier_pct": 11.54, "quadrant_within_tier": "Stars", "total_revenue_thb": 2296693, "total_cm_thb": 1575764.96, "strategic_recommendation": "🐴 ม้างาน (ขายดีมากแต่กำไรต่ำ): ปรับสัดส่วนวัตถุดิบแพง เพิ่มคาร์บหรือผัก ปรับขึ้นราคา 3-5 บาทแบบค่อยเป็นค่อยไป หรือจับคู่ Bundle กับเมนูกำไรสูง"}, {"menu_item_id": "pa-ja-spicy-chicken-rice", "menu_name_th": "ข้าวยำไก่แซ่บ", "restaurant_id": "pa-ja-23-hours", "restaurant_name": "ข้าวมันไก่ป้าจ๋า 23 ชั่วโมง", "price_tier": "economy", "price_confidence": "verified", "selling_price_thb": 69, "food_cost_thb": 22.88, "food_cost_pct": 33.16, "target_food_cost_pct": 45, "food_cost_exceeds_target": false, "contribution_margin_thb": 46.12, "total_orders": 38746, "menu_mix_restaurant_pct": 33.32, "quadrant_within_restaurant": "Stars", "menu_mix_tier_pct": 11.49, "quadrant_within_tier": "Stars", "total_revenue_thb": 2673474, "total_cm_thb": 1786965.52, "strategic_recommendation": "⭐ เมนูดาวเด่น (ขายดี+กำไรสูง): รักษาสูตร คุณภาพ และตำแหน่งในเมนู เป็นตัวชูโรงสร้างกระแสเงินสด ไม่ควรขึ้นราคาหากไม่จำเป็น"}, {"menu_item_id": "pa-ja-fried-chicken-rice", "menu_name_th": "ข้าวไก่ทอด", "restaurant_id": "pa-ja-23-hours", "restaurant_name": "ข้าวมันไก่ป้าจ๋า 23 ชั่วโมง", "price_tier": "economy", "price_confidence": "verified", "selling_price_thb": 59, "food_cost_thb": 19.25, "food_cost_pct": 32.63, "target_food_cost_pct": 45, "food_cost_exceeds_target": false, "contribution_margin_thb": 39.75, "total_orders": 38607, "menu_mix_restaurant_pct": 33.2, "quadrant_within_restaurant": "Plowhorses", "menu_mix_tier_pct": 11.45, "quadrant_within_tier": "Stars", "total_revenue_thb": 2277813, "total_cm_thb": 1534628.25, "strategic_recommendation": "🐴 ม้างาน (ขายดีมากแต่กำไรต่ำ): ปรับสัดส่วนวัตถุดิบแพง เพิ่มคาร์บหรือผัก ปรับขึ้นราคา 3-5 บาทแบบค่อยเป็นค่อยไป หรือจับคู่ Bundle กับเมนูกำไรสูง"}], "procurement_plan": [{"commodity_group_name": "carb_base", "date": "2027-07-31", "restaurant_id": "pa-ja-23-hours", "academic_period": "semester_break", "actual_demand_kg": 10.87, "ending_inventory_kg": 8.74, "safety_stock_kg": 8.74, "reorder_point_kg": 90.22, "order_quantity_kg": 8.3}, {"commodity_group_name": "fresh_veg_herbs", "date": "2027-07-31", "restaurant_id": "pa-ja-23-hours", "academic_period": "semester_break", "actual_demand_kg": 5.55, "ending_inventory_kg": 1.07, "safety_stock_kg": 1.07, "reorder_point_kg": 6.82, "order_quantity_kg": 5.55}, {"commodity_group_name": "poultry", "date": "2027-07-31", "restaurant_id": "pa-ja-23-hours", "academic_period": "semester_break", "actual_demand_kg": 16.39, "ending_inventory_kg": 4.15, "safety_stock_kg": 4.15, "reorder_point_kg": 21.66, "order_quantity_kg": 16.39}, {"commodity_group_name": "sauce_seasoning", "date": "2027-07-31", "restaurant_id": "pa-ja-23-hours", "academic_period": "semester_break", "actual_demand_kg": 2.88, "ending_inventory_kg": 4.1, "safety_stock_kg": 3.22, "reorder_point_kg": 45.99, "order_quantity_kg": 1.97}]}, {"id": "tama-nakhon-pathom", "name": "TAMA Japanese Restaurant นครปฐม", "tier": "mid", "confidence": "verified", "waste_reduction_pct": 99.7, "stockout_rate": 1.25, "baseline_waste_kg": 627.0, "muenee_waste_kg": 5.9, "menus": [{"menu_item_id": "tama-torched-salmon-mayo-rice", "menu_name_th": "ข้าวแซลมอนเบิร์นมาโย", "restaurant_id": "tama-nakhon-pathom", "restaurant_name": "TAMA Japanese Restaurant นครปฐม", "price_tier": "mid", "price_confidence": "verified", "selling_price_thb": 159, "food_cost_thb": 99.23, "food_cost_pct": 62.41, "target_food_cost_pct": 40, "food_cost_exceeds_target": true, "contribution_margin_thb": 59.77, "total_orders": 13684, "menu_mix_restaurant_pct": 33.48, "quadrant_within_restaurant": "Plowhorses", "menu_mix_tier_pct": 11.44, "quadrant_within_tier": "Plowhorses", "total_revenue_thb": 2175756, "total_cm_thb": 817892.68, "strategic_recommendation": "🐴 ม้างาน (ขายดีมากแต่กำไรต่ำ): ปรับสัดส่วนวัตถุดิบแพง เพิ่มคาร์บหรือผัก ปรับขึ้นราคา 3-5 บาทแบบค่อยเป็นค่อยไป หรือจับคู่ Bundle กับเมนูกำไรสูง"}, {"menu_item_id": "tama-salmon-ebiko-sauce-rice", "menu_name_th": "ข้าวแซลมอนซอสไข่กุ้ง", "restaurant_id": "tama-nakhon-pathom", "restaurant_name": "TAMA Japanese Restaurant นครปฐม", "price_tier": "mid", "price_confidence": "verified", "selling_price_thb": 159, "food_cost_thb": 106.34, "food_cost_pct": 66.88, "target_food_cost_pct": 40, "food_cost_exceeds_target": true, "contribution_margin_thb": 52.66, "total_orders": 13620, "menu_mix_restaurant_pct": 33.32, "quadrant_within_restaurant": "Plowhorses", "menu_mix_tier_pct": 11.39, "quadrant_within_tier": "Plowhorses", "total_revenue_thb": 2165580, "total_cm_thb": 717229.2, "strategic_recommendation": "🐴 ม้างาน (ขายดีมากแต่กำไรต่ำ): ปรับสัดส่วนวัตถุดิบแพง เพิ่มคาร์บหรือผัก ปรับขึ้นราคา 3-5 บาทแบบค่อยเป็นค่อยไป หรือจับคู่ Bundle กับเมนูกำไรสูง"}, {"menu_item_id": "tama-kani-miso-set", "menu_name_th": "คานิมิโซะ", "restaurant_id": "tama-nakhon-pathom", "restaurant_name": "TAMA Japanese Restaurant นครปฐม", "price_tier": "mid", "price_confidence": "verified", "selling_price_thb": 169, "food_cost_thb": 86.45, "food_cost_pct": 51.15, "target_food_cost_pct": 40, "food_cost_exceeds_target": true, "contribution_margin_thb": 82.55, "total_orders": 13571, "menu_mix_restaurant_pct": 33.2, "quadrant_within_restaurant": "Stars", "menu_mix_tier_pct": 11.35, "quadrant_within_tier": "Stars", "total_revenue_thb": 2293499, "total_cm_thb": 1120286.05, "strategic_recommendation": "⭐ เมนูดาวเด่น (ขายดี+กำไรสูง) แต่ Food Cost เกินเพดานเป้าหมาย: ควรรักษาตำแหน่งเมนู ลดต้นทุนด้วยการเจรจาซื้อวัตถุดิบร่วมหรือปรับลดขนาดผักตกแต่ง ห้ามขึ้นราคาเด็ดขาด"}], "procurement_plan": [{"commodity_group_name": "carb_base", "date": "2027-07-31", "restaurant_id": "tama-nakhon-pathom", "academic_period": "semester_break", "actual_demand_kg": 3.0, "ending_inventory_kg": 3.59, "safety_stock_kg": 3.59, "reorder_point_kg": 29.62, "order_quantity_kg": 2.69}, {"commodity_group_name": "egg_and_tofu", "date": "2027-07-31", "restaurant_id": "tama-nakhon-pathom", "academic_period": "semester_break", "actual_demand_kg": 0.59, "ending_inventory_kg": 0.55, "safety_stock_kg": 0.55, "reorder_point_kg": 1.81, "order_quantity_kg": 0.59}, {"commodity_group_name": "fresh_veg_herbs", "date": "2027-07-31", "restaurant_id": "tama-nakhon-pathom", "academic_period": "semester_break", "actual_demand_kg": 0.7, "ending_inventory_kg": 0.26, "safety_stock_kg": 0.26, "reorder_point_kg": 1.11, "order_quantity_kg": 0.7}, {"commodity_group_name": "sauce_seasoning", "date": "2027-07-31", "restaurant_id": "tama-nakhon-pathom", "academic_period": "semester_break", "actual_demand_kg": 0.99, "ending_inventory_kg": 2.1, "safety_stock_kg": 1.7, "reorder_point_kg": 18.73, "order_quantity_kg": 0.59}, {"commodity_group_name": "seafood", "date": "2027-07-31", "restaurant_id": "tama-nakhon-pathom", "academic_period": "semester_break", "actual_demand_kg": 4.0, "ending_inventory_kg": 0.0, "safety_stock_kg": 1.72, "reorder_point_kg": 11.74, "order_quantity_kg": 4.0}]}, {"id": "thasanam-boat-noodles", "name": "ก๋วยเตี๋ยวเรือ ท่าสนาม THASANAM", "tier": "economy", "confidence": "unverified", "waste_reduction_pct": 100.0, "stockout_rate": 0.94, "baseline_waste_kg": 2499.8, "muenee_waste_kg": 0.0, "menus": [{"menu_item_id": "thasanam-spicy-liver", "menu_name_th": "ตับแซ่บนัว", "restaurant_id": "thasanam-boat-noodles", "restaurant_name": "ก๋วยเตี๋ยวเรือ ท่าสนาม THASANAM", "price_tier": "economy", "price_confidence": "unverified", "selling_price_thb": 60, "food_cost_thb": 25.13, "food_cost_pct": 41.88, "target_food_cost_pct": 45, "food_cost_exceeds_target": false, "contribution_margin_thb": 34.87, "total_orders": 32150, "menu_mix_restaurant_pct": 34.13, "quadrant_within_restaurant": "Stars", "menu_mix_tier_pct": 9.53, "quadrant_within_tier": "Plowhorses", "total_revenue_thb": 1929000, "total_cm_thb": 1121070.5, "strategic_recommendation": "⭐ เมนูดาวเด่น (ขายดี+กำไรสูง): รักษาสูตร คุณภาพ และตำแหน่งในเมนู เป็นตัวชูโรงสร้างกระแสเงินสด ไม่ควรขึ้นราคาหากไม่จำเป็น"}, {"menu_item_id": "thasanam-spicy-pork", "menu_name_th": "หมูแซ่บนัว", "restaurant_id": "thasanam-boat-noodles", "restaurant_name": "ก๋วยเตี๋ยวเรือ ท่าสนาม THASANAM", "price_tier": "economy", "price_confidence": "unverified", "selling_price_thb": 60, "food_cost_thb": 37.54, "food_cost_pct": 62.57, "target_food_cost_pct": 45, "food_cost_exceeds_target": true, "contribution_margin_thb": 22.46, "total_orders": 31857, "menu_mix_restaurant_pct": 33.82, "quadrant_within_restaurant": "Plowhorses", "menu_mix_tier_pct": 9.45, "quadrant_within_tier": "Plowhorses", "total_revenue_thb": 1911420, "total_cm_thb": 715508.22, "strategic_recommendation": "🐴 ม้างาน (ขายดีมากแต่กำไรต่ำ): ปรับสัดส่วนวัตถุดิบแพง เพิ่มคาร์บหรือผัก ปรับขึ้นราคา 3-5 บาทแบบค่อยเป็นค่อยไป หรือจับคู่ Bundle กับเมนูกำไรสูง"}, {"menu_item_id": "thasanam-boat-noodle-soup", "menu_name_th": "ก๋วยเตี๋ยวเรือน้ำ", "restaurant_id": "thasanam-boat-noodles", "restaurant_name": "ก๋วยเตี๋ยวเรือ ท่าสนาม THASANAM", "price_tier": "economy", "price_confidence": "unverified", "selling_price_thb": 40, "food_cost_thb": 26.48, "food_cost_pct": 66.2, "target_food_cost_pct": 45, "food_cost_exceeds_target": true, "contribution_margin_thb": 13.52, "total_orders": 30188, "menu_mix_restaurant_pct": 32.05, "quadrant_within_restaurant": "Plowhorses", "menu_mix_tier_pct": 8.95, "quadrant_within_tier": "Plowhorses", "total_revenue_thb": 1207520, "total_cm_thb": 408141.76, "strategic_recommendation": "🐴 ม้างาน (ขายดีมากแต่กำไรต่ำ): ปรับสัดส่วนวัตถุดิบแพง เพิ่มคาร์บหรือผัก ปรับขึ้นราคา 3-5 บาทแบบค่อยเป็นค่อยไป หรือจับคู่ Bundle กับเมนูกำไรสูง"}], "procurement_plan": [{"commodity_group_name": "beef", "date": "2027-07-31", "restaurant_id": "thasanam-boat-noodles", "academic_period": "semester_break", "actual_demand_kg": 1.03, "ending_inventory_kg": 0.49, "safety_stock_kg": 0.49, "reorder_point_kg": 1.74, "order_quantity_kg": 1.03}, {"commodity_group_name": "carb_base", "date": "2027-07-31", "restaurant_id": "thasanam-boat-noodles", "academic_period": "semester_break", "actual_demand_kg": 1.96, "ending_inventory_kg": 2.57, "safety_stock_kg": 2.57, "reorder_point_kg": 19.66, "order_quantity_kg": 1.76}, {"commodity_group_name": "fresh_veg_herbs", "date": "2027-07-31", "restaurant_id": "thasanam-boat-noodles", "academic_period": "semester_break", "actual_demand_kg": 8.11, "ending_inventory_kg": 2.39, "safety_stock_kg": 2.39, "reorder_point_kg": 13.22, "order_quantity_kg": 8.11}, {"commodity_group_name": "pork_and_cuts", "date": "2027-07-31", "restaurant_id": "thasanam-boat-noodles", "academic_period": "semester_break", "actual_demand_kg": 8.24, "ending_inventory_kg": 3.17, "safety_stock_kg": 3.17, "reorder_point_kg": 14.27, "order_quantity_kg": 8.24}, {"commodity_group_name": "sauce_seasoning", "date": "2027-07-31", "restaurant_id": "thasanam-boat-noodles", "academic_period": "semester_break", "actual_demand_kg": 2.58, "ending_inventory_kg": 5.02, "safety_stock_kg": 4.24, "reorder_point_kg": 51.72, "order_quantity_kg": 1.33}]}, {"id": "volcano-prawn", "name": "กุ้งอบภูเขาไฟ", "tier": "mid", "confidence": "unverified", "waste_reduction_pct": 99.4, "stockout_rate": 0.62, "baseline_waste_kg": 1171.0, "muenee_waste_kg": 19.9, "menus": [{"menu_item_id": "volcano-sour-curry-prawn-omelette", "menu_name_th": "แกงส้มชะอมกุ้ง", "restaurant_id": "volcano-prawn", "restaurant_name": "กุ้งอบภูเขาไฟ", "price_tier": "mid", "price_confidence": "unverified", "selling_price_thb": 180, "food_cost_thb": 77.58, "food_cost_pct": 43.1, "target_food_cost_pct": 40, "food_cost_exceeds_target": true, "contribution_margin_thb": 102.42, "total_orders": 11550, "menu_mix_restaurant_pct": 56.46, "quadrant_within_restaurant": "Plowhorses", "menu_mix_tier_pct": 9.66, "quadrant_within_tier": "Stars", "total_revenue_thb": 2079000, "total_cm_thb": 1182951.0, "strategic_recommendation": "🐴 ม้างาน (ขายดีมากแต่กำไรต่ำ): ปรับสัดส่วนวัตถุดิบแพง เพิ่มคาร์บหรือผัก ปรับขึ้นราคา 3-5 บาทแบบค่อยเป็นค่อยไป หรือจับคู่ Bundle กับเมนูกำไรสูง"}, {"menu_item_id": "volcano-baked-prawn", "menu_name_th": "กุ้งอบภูเขาไฟ", "restaurant_id": "volcano-prawn", "restaurant_name": "กุ้งอบภูเขาไฟ", "price_tier": "premium_social", "price_confidence": "unverified", "selling_price_thb": 800, "food_cost_thb": 222.02, "food_cost_pct": 27.75, "target_food_cost_pct": 35, "food_cost_exceeds_target": false, "contribution_margin_thb": 577.98, "total_orders": 4494, "menu_mix_restaurant_pct": 21.97, "quadrant_within_restaurant": "Puzzles", "menu_mix_tier_pct": 8.44, "quadrant_within_tier": "Stars", "total_revenue_thb": 3595200, "total_cm_thb": 2597442.12, "strategic_recommendation": "🧩 ปริศนา (กำไรดีมากแต่ยอดขายน้อย): เร่งโปรโมชัน เพิ่มการมองเห็นในแอป MueNee ตรวจสอบและยืนยันข้อมูลราคา (Verified) และสารก่อภูมิแพ้เพื่อปลดล็อกฟิลเตอร์ผู้ใช้"}, {"menu_item_id": "volcano-three-armies-salad", "menu_name_th": "ยำสามทัพ", "restaurant_id": "volcano-prawn", "restaurant_name": "กุ้งอบภูเขาไฟ", "price_tier": "premium_social", "price_confidence": "unverified", "selling_price_thb": 250, "food_cost_thb": 87.03, "food_cost_pct": 34.81, "target_food_cost_pct": 35, "food_cost_exceeds_target": false, "contribution_margin_thb": 162.97, "total_orders": 4414, "menu_mix_restaurant_pct": 21.58, "quadrant_within_restaurant": "Dogs", "menu_mix_tier_pct": 8.29, "quadrant_within_tier": "Plowhorses", "total_revenue_thb": 1103500, "total_cm_thb": 719349.58, "strategic_recommendation": "🐶 สุนัขเฝ้าบ้าน (ขายน้อย+กำไรต่ำ): ปรับตำแหน่งการวางในเมนู หรือปรับสูตรเพื่อลดของสดเหลือทิ้ง"}], "procurement_plan": [{"commodity_group_name": "carb_base", "date": "2027-07-31", "restaurant_id": "volcano-prawn", "academic_period": "semester_break", "actual_demand_kg": 0.22, "ending_inventory_kg": 1.04, "safety_stock_kg": 1.04, "reorder_point_kg": 2.31, "order_quantity_kg": 0.22}, {"commodity_group_name": "egg_and_tofu", "date": "2027-07-31", "restaurant_id": "volcano-prawn", "academic_period": "semester_break", "actual_demand_kg": 1.25, "ending_inventory_kg": 1.36, "safety_stock_kg": 0.88, "reorder_point_kg": 3.44, "order_quantity_kg": 0.77}, {"commodity_group_name": "fresh_veg_herbs", "date": "2027-07-31", "restaurant_id": "volcano-prawn", "academic_period": "semester_break", "actual_demand_kg": 4.74, "ending_inventory_kg": 1.36, "safety_stock_kg": 1.36, "reorder_point_kg": 5.77, "order_quantity_kg": 4.74}, {"commodity_group_name": "sauce_seasoning", "date": "2027-07-31", "restaurant_id": "volcano-prawn", "academic_period": "semester_break", "actual_demand_kg": 1.1, "ending_inventory_kg": 2.33, "safety_stock_kg": 1.83, "reorder_point_kg": 16.67, "order_quantity_kg": 0.36}, {"commodity_group_name": "seafood", "date": "2027-07-31", "restaurant_id": "volcano-prawn", "academic_period": "semester_break", "actual_demand_kg": 6.79, "ending_inventory_kg": 0.0, "safety_stock_kg": 4.41, "reorder_point_kg": 17.43, "order_quantity_kg": 6.79}]}], "menus": [{"menu_item_id": "bonchon-wings-6", "menu_name_th": "ปีกไก่บอนชอน 6 ชิ้น", "restaurant_id": "bonchon-sanamchan", "restaurant_name": "Bonchon Sanamchan Nakornpathom", "price_tier": "premium_social", "price_confidence": "verified", "selling_price_thb": 199, "food_cost_thb": 35.29, "food_cost_pct": 17.73, "target_food_cost_pct": 35, "food_cost_exceeds_target": false, "contribution_margin_thb": 163.71, "total_orders": 5248, "menu_mix_restaurant_pct": 33.78, "quadrant_within_restaurant": "Plowhorses", "menu_mix_tier_pct": 9.85, "quadrant_within_tier": "Plowhorses", "total_revenue_thb": 1044352, "total_cm_thb": 859150.08, "strategic_recommendation": "🐴 ม้างาน (ขายดีมากแต่กำไรต่ำ): ปรับสัดส่วนวัตถุดิบแพง เพิ่มคาร์บหรือผัก ปรับขึ้นราคา 3-5 บาทแบบค่อยเป็นค่อยไป หรือจับคู่ Bundle กับเมนูกำไรสูง"}, {"menu_item_id": "bonchon-chicken-rice-soy-garlic", "menu_name_th": "ชุดข้าวกล่องไก่บอนชอน ซอยการ์ลิค", "restaurant_id": "bonchon-sanamchan", "restaurant_name": "Bonchon Sanamchan Nakornpathom", "price_tier": "premium_social", "price_confidence": "verified", "selling_price_thb": 229, "food_cost_thb": 25.4, "food_cost_pct": 11.09, "target_food_cost_pct": 35, "food_cost_exceeds_target": false, "contribution_margin_thb": 203.6, "total_orders": 5184, "menu_mix_restaurant_pct": 33.37, "quadrant_within_restaurant": "Stars", "menu_mix_tier_pct": 9.73, "quadrant_within_tier": "Plowhorses", "total_revenue_thb": 1187136, "total_cm_thb": 1055462.4, "strategic_recommendation": "⭐ เมนูดาวเด่น (ขายดี+กำไรสูง): รักษาสูตร คุณภาพ และตำแหน่งในเมนู เป็นตัวชูโรงสร้างกระแสเงินสด ไม่ควรขึ้นราคาหากไม่จำเป็น"}, {"menu_item_id": "bonchon-fish-rice-hot", "menu_name_th": "ชุดข้าวกล่องปลาทอดบอนชอน ฮอท", "restaurant_id": "bonchon-sanamchan", "restaurant_name": "Bonchon Sanamchan Nakornpathom", "price_tier": "premium_social", "price_confidence": "verified", "selling_price_thb": 259, "food_cost_thb": 31.95, "food_cost_pct": 12.34, "target_food_cost_pct": 35, "food_cost_exceeds_target": false, "contribution_margin_thb": 227.05, "total_orders": 5103, "menu_mix_restaurant_pct": 32.85, "quadrant_within_restaurant": "Stars", "menu_mix_tier_pct": 9.58, "quadrant_within_tier": "Plowhorses", "total_revenue_thb": 1321677, "total_cm_thb": 1158636.15, "strategic_recommendation": "⭐ เมนูดาวเด่น (ขายดี+กำไรสูง): รักษาสูตร คุณภาพ และตำแหน่งในเมนู เป็นตัวชูโรงสร้างกระแสเงินสด ไม่ควรขึ้นราคาหากไม่จำเป็น"}, {"menu_item_id": "good-food-banana-oat-loaf", "menu_name_th": "โลฟโอ๊ตกล้วยน้ำว้า", "restaurant_id": "good-food-nakhon-pathom", "restaurant_name": "Good Food", "price_tier": "economy", "price_confidence": "unverified", "selling_price_thb": 59, "food_cost_thb": 6.27, "food_cost_pct": 10.63, "target_food_cost_pct": 45, "food_cost_exceeds_target": false, "contribution_margin_thb": 52.73, "total_orders": 31817, "menu_mix_restaurant_pct": 57.42, "quadrant_within_restaurant": "Plowhorses", "menu_mix_tier_pct": 9.44, "quadrant_within_tier": "Stars", "total_revenue_thb": 1877203, "total_cm_thb": 1677710.41, "strategic_recommendation": "🐴 ม้างาน (ขายดีมากแต่กำไรต่ำ): ปรับสัดส่วนวัตถุดิบแพง เพิ่มคาร์บหรือผัก ปรับขึ้นราคา 3-5 บาทแบบค่อยเป็นค่อยไป หรือจับคู่ Bundle กับเมนูกำไรสูง"}, {"menu_item_id": "good-food-salmon-salad-rice", "menu_name_th": "Salad Rice Salmon", "restaurant_id": "good-food-nakhon-pathom", "restaurant_name": "Good Food", "price_tier": "mid", "price_confidence": "unverified", "selling_price_thb": 159, "food_cost_thb": 110.42, "food_cost_pct": 69.45, "target_food_cost_pct": 40, "food_cost_exceeds_target": true, "contribution_margin_thb": 48.58, "total_orders": 11872, "menu_mix_restaurant_pct": 21.42, "quadrant_within_restaurant": "Dogs", "menu_mix_tier_pct": 9.93, "quadrant_within_tier": "Plowhorses", "total_revenue_thb": 1887648, "total_cm_thb": 576741.76, "strategic_recommendation": "🐶 สุนัขเฝ้าบ้าน (ขายน้อย+กำไรต่ำ+ต้นทุนเกินเป้า): เป็นเมนูเปราะบางสูงสุด ควรปรับสูตรขนานใหญ่ หรือพิจารณาตัดออกจากเมนูหลักแล้วขายเฉพาะช่วงเทศกาล"}, {"menu_item_id": "good-food-custom-sandwich", "menu_name_th": "แซนด์วิชเลือกไส้", "restaurant_id": "good-food-nakhon-pathom", "restaurant_name": "Good Food", "price_tier": "mid", "price_confidence": "unverified", "selling_price_thb": 109, "food_cost_thb": 23.51, "food_cost_pct": 21.57, "target_food_cost_pct": 40, "food_cost_exceeds_target": false, "contribution_margin_thb": 85.49, "total_orders": 11723, "menu_mix_restaurant_pct": 21.16, "quadrant_within_restaurant": "Puzzles", "menu_mix_tier_pct": 9.8, "quadrant_within_tier": "Stars", "total_revenue_thb": 1277807, "total_cm_thb": 1002199.27, "strategic_recommendation": "🧩 ปริศนา (กำไรดีมากแต่ยอดขายน้อย): เร่งโปรโมชัน เพิ่มการมองเห็นในแอป MueNee ตรวจสอบและยืนยันข้อมูลราคา (Verified) และสารก่อภูมิแพ้เพื่อปลดล็อกฟิลเตอร์ผู้ใช้"}, {"menu_item_id": "hinn-roast-duck-rice", "menu_name_th": "ข้าวหน้าเป็ด", "restaurant_id": "hinn-red-pork-rice", "restaurant_name": "ร้านฮิ้น ข้าวหมูแดง", "price_tier": "economy", "price_confidence": "unverified", "selling_price_thb": 60, "food_cost_thb": 33.26, "food_cost_pct": 55.43, "target_food_cost_pct": 45, "food_cost_exceeds_target": true, "contribution_margin_thb": 26.74, "total_orders": 32303, "menu_mix_restaurant_pct": 34.03, "quadrant_within_restaurant": "Plowhorses", "menu_mix_tier_pct": 9.58, "quadrant_within_tier": "Plowhorses", "total_revenue_thb": 1938180, "total_cm_thb": 863782.22, "strategic_recommendation": "🐴 ม้างาน (ขายดีมากแต่กำไรต่ำ): ปรับสัดส่วนวัตถุดิบแพง เพิ่มคาร์บหรือผัก ปรับขึ้นราคา 3-5 บาทแบบค่อยเป็นค่อยไป หรือจับคู่ Bundle กับเมนูกำไรสูง"}, {"menu_item_id": "hinn-red-pork-rice", "menu_name_th": "ข้าวหมูแดง", "restaurant_id": "hinn-red-pork-rice", "restaurant_name": "ร้านฮิ้น ข้าวหมูแดง", "price_tier": "economy", "price_confidence": "unverified", "selling_price_thb": 60, "food_cost_thb": 21.25, "food_cost_pct": 35.42, "target_food_cost_pct": 45, "food_cost_exceeds_target": false, "contribution_margin_thb": 38.75, "total_orders": 31534, "menu_mix_restaurant_pct": 33.22, "quadrant_within_restaurant": "Stars", "menu_mix_tier_pct": 9.35, "quadrant_within_tier": "Stars", "total_revenue_thb": 1892040, "total_cm_thb": 1221942.5, "strategic_recommendation": "⭐ เมนูดาวเด่น (ขายดี+กำไรสูง): รักษาสูตร คุณภาพ และตำแหน่งในเมนู เป็นตัวชูโรงสร้างกระแสเงินสด ไม่ควรขึ้นราคาหากไม่จำเป็น"}, {"menu_item_id": "hinn-crispy-pork-rice", "menu_name_th": "ข้าวหมูกรอบ", "restaurant_id": "hinn-red-pork-rice", "restaurant_name": "ร้านฮิ้น ข้าวหมูแดง", "price_tier": "economy", "price_confidence": "unverified", "selling_price_thb": 60, "food_cost_thb": 30.3, "food_cost_pct": 50.5, "target_food_cost_pct": 45, "food_cost_exceeds_target": true, "contribution_margin_thb": 29.7, "total_orders": 31083, "menu_mix_restaurant_pct": 32.75, "quadrant_within_restaurant": "Plowhorses", "menu_mix_tier_pct": 9.22, "quadrant_within_tier": "Plowhorses", "total_revenue_thb": 1864980, "total_cm_thb": 923165.1, "strategic_recommendation": "🐴 ม้างาน (ขายดีมากแต่กำไรต่ำ): ปรับสัดส่วนวัตถุดิบแพง เพิ่มคาร์บหรือผัก ปรับขึ้นราคา 3-5 บาทแบบค่อยเป็นค่อยไป หรือจับคู่ Bundle กับเมนูกำไรสูง"}, {"menu_item_id": "kinkane-hamachi-sashimi", "menu_name_th": "ฮามาจิซาชิมิ", "restaurant_id": "kinkane-89", "restaurant_name": "KinKane 89", "price_tier": "premium_social", "price_confidence": "unverified", "selling_price_thb": 280, "food_cost_thb": 151.57, "food_cost_pct": 54.13, "target_food_cost_pct": 35, "food_cost_exceeds_target": true, "contribution_margin_thb": 128.43, "total_orders": 4447, "menu_mix_restaurant_pct": 33.54, "quadrant_within_restaurant": "Stars", "menu_mix_tier_pct": 8.35, "quadrant_within_tier": "Plowhorses", "total_revenue_thb": 1245160, "total_cm_thb": 571128.21, "strategic_recommendation": "⭐ เมนูดาวเด่น (ขายดี+กำไรสูง) แต่ Food Cost เกินเพดานเป้าหมาย: ควรรักษาตำแหน่งเมนู ลดต้นทุนด้วยการเจรจาซื้อวัตถุดิบร่วมหรือปรับลดขนาดผักตกแต่ง ห้ามขึ้นราคาเด็ดขาด"}, {"menu_item_id": "kinkane-scallop-sashimi", "menu_name_th": "โฮตาเตะซาชิมิ", "restaurant_id": "kinkane-89", "restaurant_name": "KinKane 89", "price_tier": "premium_social", "price_confidence": "unverified", "selling_price_thb": 250, "food_cost_thb": 183.27, "food_cost_pct": 73.31, "target_food_cost_pct": 35, "food_cost_exceeds_target": true, "contribution_margin_thb": 66.73, "total_orders": 4408, "menu_mix_restaurant_pct": 33.25, "quadrant_within_restaurant": "Plowhorses", "menu_mix_tier_pct": 8.28, "quadrant_within_tier": "Plowhorses", "total_revenue_thb": 1102000, "total_cm_thb": 294145.84, "strategic_recommendation": "🐴 ม้างาน (ขายดีมากแต่กำไรต่ำ): ปรับสัดส่วนวัตถุดิบแพง เพิ่มคาร์บหรือผัก ปรับขึ้นราคา 3-5 บาทแบบค่อยเป็นค่อยไป หรือจับคู่ Bundle กับเมนูกำไรสูง"}, {"menu_item_id": "kinkane-salmon-sashimi", "menu_name_th": "แซลมอนซาชิมิ", "restaurant_id": "kinkane-89", "restaurant_name": "KinKane 89", "price_tier": "premium_social", "price_confidence": "unverified", "selling_price_thb": 220, "food_cost_thb": 109.31, "food_cost_pct": 49.69, "target_food_cost_pct": 35, "food_cost_exceeds_target": true, "contribution_margin_thb": 110.69, "total_orders": 4403, "menu_mix_restaurant_pct": 33.21, "quadrant_within_restaurant": "Stars", "menu_mix_tier_pct": 8.27, "quadrant_within_tier": "Plowhorses", "total_revenue_thb": 968660, "total_cm_thb": 487368.07, "strategic_recommendation": "⭐ เมนูดาวเด่น (ขายดี+กำไรสูง) แต่ Food Cost เกินเพดานเป้าหมาย: ควรรักษาตำแหน่งเมนู ลดต้นทุนด้วยการเจรจาซื้อวัตถุดิบร่วมหรือปรับลดขนาดผักตกแต่ง ห้ามขึ้นราคาเด็ดขาด"}, {"menu_item_id": "loong-loy-jungle-catfish-curry", "menu_name_th": "แกงป่าปลาบึก ชาม", "restaurant_id": "loong-loy-pa-lan", "restaurant_name": "ลุงลอยป่าลั่น", "price_tier": "mid", "price_confidence": "verified", "selling_price_thb": 80, "food_cost_thb": 42.03, "food_cost_pct": 52.54, "target_food_cost_pct": 40, "food_cost_exceeds_target": true, "contribution_margin_thb": 37.97, "total_orders": 14777, "menu_mix_restaurant_pct": 33.92, "quadrant_within_restaurant": "Plowhorses", "menu_mix_tier_pct": 12.36, "quadrant_within_tier": "Plowhorses", "total_revenue_thb": 1182160, "total_cm_thb": 561082.69, "strategic_recommendation": "🐴 ม้างาน (ขายดีมากแต่กำไรต่ำ): ปรับสัดส่วนวัตถุดิบแพง เพิ่มคาร์บหรือผัก ปรับขึ้นราคา 3-5 บาทแบบค่อยเป็นค่อยไป หรือจับคู่ Bundle กับเมนูกำไรสูง"}, {"menu_item_id": "loong-loy-large-crab-fried-rice", "menu_name_th": "ข้าวผัดปู ใหญ่", "restaurant_id": "loong-loy-pa-lan", "restaurant_name": "ลุงลอยป่าลั่น", "price_tier": "mid", "price_confidence": "verified", "selling_price_thb": 150, "food_cost_thb": 90.26, "food_cost_pct": 60.17, "target_food_cost_pct": 40, "food_cost_exceeds_target": true, "contribution_margin_thb": 59.74, "total_orders": 14573, "menu_mix_restaurant_pct": 33.45, "quadrant_within_restaurant": "Stars", "menu_mix_tier_pct": 12.19, "quadrant_within_tier": "Plowhorses", "total_revenue_thb": 2185950, "total_cm_thb": 870591.02, "strategic_recommendation": "⭐ เมนูดาวเด่น (ขายดี+กำไรสูง) แต่ Food Cost เกินเพดานเป้าหมาย: ควรรักษาตำแหน่งเมนู ลดต้นทุนด้วยการเจรจาซื้อวัตถุดิบร่วมหรือปรับลดขนาดผักตกแต่ง ห้ามขึ้นราคาเด็ดขาด"}, {"menu_item_id": "loong-loy-tofu-pork-soup", "menu_name_th": "แกงจืดเต้าหู้หมูสับ เล็ก", "restaurant_id": "loong-loy-pa-lan", "restaurant_name": "ลุงลอยป่าลั่น", "price_tier": "mid", "price_confidence": "verified", "selling_price_thb": 80, "food_cost_thb": 23.81, "food_cost_pct": 29.76, "target_food_cost_pct": 40, "food_cost_exceeds_target": false, "contribution_margin_thb": 56.19, "total_orders": 14219, "menu_mix_restaurant_pct": 32.64, "quadrant_within_restaurant": "Stars", "menu_mix_tier_pct": 11.89, "quadrant_within_tier": "Plowhorses", "total_revenue_thb": 1137520, "total_cm_thb": 798965.61, "strategic_recommendation": "⭐ เมนูดาวเด่น (ขายดี+กำไรสูง): รักษาสูตร คุณภาพ และตำแหน่งในเมนู เป็นตัวชูโรงสร้างกระแสเงินสด ไม่ควรขึ้นราคาหากไม่จำเป็น"}, {"menu_item_id": "madam-ho-paper-pot-pho", "menu_name_th": "เฝอหม้อกระดาษ", "restaurant_id": "madam-ho-sanamchan", "restaurant_name": "มาดามโฮ เฝอหม้อไฟ หน้า ม.ศิลปากร นครปฐม", "price_tier": "premium_social", "price_confidence": "verified", "selling_price_thb": 399, "food_cost_thb": 42.17, "food_cost_pct": 10.57, "target_food_cost_pct": 35, "food_cost_exceeds_target": false, "contribution_margin_thb": 356.83, "total_orders": 5239, "menu_mix_restaurant_pct": 33.67, "quadrant_within_restaurant": "Plowhorses", "menu_mix_tier_pct": 9.84, "quadrant_within_tier": "Stars", "total_revenue_thb": 2090361, "total_cm_thb": 1869432.37, "strategic_recommendation": "🐴 ม้างาน (ขายดีมากแต่กำไรต่ำ): ปรับสัดส่วนวัตถุดิบแพง เพิ่มคาร์บหรือผัก ปรับขึ้นราคา 3-5 บาทแบบค่อยเป็นค่อยไป หรือจับคู่ Bundle กับเมนูกำไรสูง"}, {"menu_item_id": "madam-ho-pork-crunch-set", "menu_name_th": "ชุดหมูกรุบกริบ", "restaurant_id": "madam-ho-sanamchan", "restaurant_name": "มาดามโฮ เฝอหม้อไฟ หน้า ม.ศิลปากร นครปฐม", "price_tier": "premium_social", "price_confidence": "verified", "selling_price_thb": 359, "food_cost_thb": 55.41, "food_cost_pct": 15.43, "target_food_cost_pct": 35, "food_cost_exceeds_target": false, "contribution_margin_thb": 303.59, "total_orders": 5189, "menu_mix_restaurant_pct": 33.34, "quadrant_within_restaurant": "Plowhorses", "menu_mix_tier_pct": 9.74, "quadrant_within_tier": "Stars", "total_revenue_thb": 1862851, "total_cm_thb": 1575328.51, "strategic_recommendation": "🐴 ม้างาน (ขายดีมากแต่กำไรต่ำ): ปรับสัดส่วนวัตถุดิบแพง เพิ่มคาร์บหรือผัก ปรับขึ้นราคา 3-5 บาทแบบค่อยเป็นค่อยไป หรือจับคู่ Bundle กับเมนูกำไรสูง"}, {"menu_item_id": "madam-ho-soft-pork-heart-set", "menu_name_th": "ชุดหมูขนุ้มหัวใจ", "restaurant_id": "madam-ho-sanamchan", "restaurant_name": "มาดามโฮ เฝอหม้อไฟ หน้า ม.ศิลปากร นครปฐม", "price_tier": "premium_social", "price_confidence": "verified", "selling_price_thb": 499, "food_cost_thb": 64.55, "food_cost_pct": 12.94, "target_food_cost_pct": 35, "food_cost_exceeds_target": false, "contribution_margin_thb": 434.45, "total_orders": 5134, "menu_mix_restaurant_pct": 32.99, "quadrant_within_restaurant": "Stars", "menu_mix_tier_pct": 9.64, "quadrant_within_tier": "Stars", "total_revenue_thb": 2561866, "total_cm_thb": 2230466.3, "strategic_recommendation": "⭐ เมนูดาวเด่น (ขายดี+กำไรสูง): รักษาสูตร คุณภาพ และตำแหน่งในเมนู เป็นตัวชูโรงสร้างกระแสเงินสด ไม่ควรขึ้นราคาหากไม่จำเป็น"}, {"menu_item_id": "pa-ja-boiled-chicken-rice", "menu_name_th": "ข้าวไก่ต้ม", "restaurant_id": "pa-ja-23-hours", "restaurant_name": "ข้าวมันไก่ป้าจ๋า 23 ชั่วโมง", "price_tier": "economy", "price_confidence": "verified", "selling_price_thb": 59, "food_cost_thb": 18.52, "food_cost_pct": 31.39, "target_food_cost_pct": 45, "food_cost_exceeds_target": false, "contribution_margin_thb": 40.48, "total_orders": 38927, "menu_mix_restaurant_pct": 33.48, "quadrant_within_restaurant": "Plowhorses", "menu_mix_tier_pct": 11.54, "quadrant_within_tier": "Stars", "total_revenue_thb": 2296693, "total_cm_thb": 1575764.96, "strategic_recommendation": "🐴 ม้างาน (ขายดีมากแต่กำไรต่ำ): ปรับสัดส่วนวัตถุดิบแพง เพิ่มคาร์บหรือผัก ปรับขึ้นราคา 3-5 บาทแบบค่อยเป็นค่อยไป หรือจับคู่ Bundle กับเมนูกำไรสูง"}, {"menu_item_id": "pa-ja-spicy-chicken-rice", "menu_name_th": "ข้าวยำไก่แซ่บ", "restaurant_id": "pa-ja-23-hours", "restaurant_name": "ข้าวมันไก่ป้าจ๋า 23 ชั่วโมง", "price_tier": "economy", "price_confidence": "verified", "selling_price_thb": 69, "food_cost_thb": 22.88, "food_cost_pct": 33.16, "target_food_cost_pct": 45, "food_cost_exceeds_target": false, "contribution_margin_thb": 46.12, "total_orders": 38746, "menu_mix_restaurant_pct": 33.32, "quadrant_within_restaurant": "Stars", "menu_mix_tier_pct": 11.49, "quadrant_within_tier": "Stars", "total_revenue_thb": 2673474, "total_cm_thb": 1786965.52, "strategic_recommendation": "⭐ เมนูดาวเด่น (ขายดี+กำไรสูง): รักษาสูตร คุณภาพ และตำแหน่งในเมนู เป็นตัวชูโรงสร้างกระแสเงินสด ไม่ควรขึ้นราคาหากไม่จำเป็น"}, {"menu_item_id": "pa-ja-fried-chicken-rice", "menu_name_th": "ข้าวไก่ทอด", "restaurant_id": "pa-ja-23-hours", "restaurant_name": "ข้าวมันไก่ป้าจ๋า 23 ชั่วโมง", "price_tier": "economy", "price_confidence": "verified", "selling_price_thb": 59, "food_cost_thb": 19.25, "food_cost_pct": 32.63, "target_food_cost_pct": 45, "food_cost_exceeds_target": false, "contribution_margin_thb": 39.75, "total_orders": 38607, "menu_mix_restaurant_pct": 33.2, "quadrant_within_restaurant": "Plowhorses", "menu_mix_tier_pct": 11.45, "quadrant_within_tier": "Stars", "total_revenue_thb": 2277813, "total_cm_thb": 1534628.25, "strategic_recommendation": "🐴 ม้างาน (ขายดีมากแต่กำไรต่ำ): ปรับสัดส่วนวัตถุดิบแพง เพิ่มคาร์บหรือผัก ปรับขึ้นราคา 3-5 บาทแบบค่อยเป็นค่อยไป หรือจับคู่ Bundle กับเมนูกำไรสูง"}, {"menu_item_id": "tama-torched-salmon-mayo-rice", "menu_name_th": "ข้าวแซลมอนเบิร์นมาโย", "restaurant_id": "tama-nakhon-pathom", "restaurant_name": "TAMA Japanese Restaurant นครปฐม", "price_tier": "mid", "price_confidence": "verified", "selling_price_thb": 159, "food_cost_thb": 99.23, "food_cost_pct": 62.41, "target_food_cost_pct": 40, "food_cost_exceeds_target": true, "contribution_margin_thb": 59.77, "total_orders": 13684, "menu_mix_restaurant_pct": 33.48, "quadrant_within_restaurant": "Plowhorses", "menu_mix_tier_pct": 11.44, "quadrant_within_tier": "Plowhorses", "total_revenue_thb": 2175756, "total_cm_thb": 817892.68, "strategic_recommendation": "🐴 ม้างาน (ขายดีมากแต่กำไรต่ำ): ปรับสัดส่วนวัตถุดิบแพง เพิ่มคาร์บหรือผัก ปรับขึ้นราคา 3-5 บาทแบบค่อยเป็นค่อยไป หรือจับคู่ Bundle กับเมนูกำไรสูง"}, {"menu_item_id": "tama-salmon-ebiko-sauce-rice", "menu_name_th": "ข้าวแซลมอนซอสไข่กุ้ง", "restaurant_id": "tama-nakhon-pathom", "restaurant_name": "TAMA Japanese Restaurant นครปฐม", "price_tier": "mid", "price_confidence": "verified", "selling_price_thb": 159, "food_cost_thb": 106.34, "food_cost_pct": 66.88, "target_food_cost_pct": 40, "food_cost_exceeds_target": true, "contribution_margin_thb": 52.66, "total_orders": 13620, "menu_mix_restaurant_pct": 33.32, "quadrant_within_restaurant": "Plowhorses", "menu_mix_tier_pct": 11.39, "quadrant_within_tier": "Plowhorses", "total_revenue_thb": 2165580, "total_cm_thb": 717229.2, "strategic_recommendation": "🐴 ม้างาน (ขายดีมากแต่กำไรต่ำ): ปรับสัดส่วนวัตถุดิบแพง เพิ่มคาร์บหรือผัก ปรับขึ้นราคา 3-5 บาทแบบค่อยเป็นค่อยไป หรือจับคู่ Bundle กับเมนูกำไรสูง"}, {"menu_item_id": "tama-kani-miso-set", "menu_name_th": "คานิมิโซะ", "restaurant_id": "tama-nakhon-pathom", "restaurant_name": "TAMA Japanese Restaurant นครปฐม", "price_tier": "mid", "price_confidence": "verified", "selling_price_thb": 169, "food_cost_thb": 86.45, "food_cost_pct": 51.15, "target_food_cost_pct": 40, "food_cost_exceeds_target": true, "contribution_margin_thb": 82.55, "total_orders": 13571, "menu_mix_restaurant_pct": 33.2, "quadrant_within_restaurant": "Stars", "menu_mix_tier_pct": 11.35, "quadrant_within_tier": "Stars", "total_revenue_thb": 2293499, "total_cm_thb": 1120286.05, "strategic_recommendation": "⭐ เมนูดาวเด่น (ขายดี+กำไรสูง) แต่ Food Cost เกินเพดานเป้าหมาย: ควรรักษาตำแหน่งเมนู ลดต้นทุนด้วยการเจรจาซื้อวัตถุดิบร่วมหรือปรับลดขนาดผักตกแต่ง ห้ามขึ้นราคาเด็ดขาด"}, {"menu_item_id": "thasanam-spicy-liver", "menu_name_th": "ตับแซ่บนัว", "restaurant_id": "thasanam-boat-noodles", "restaurant_name": "ก๋วยเตี๋ยวเรือ ท่าสนาม THASANAM", "price_tier": "economy", "price_confidence": "unverified", "selling_price_thb": 60, "food_cost_thb": 25.13, "food_cost_pct": 41.88, "target_food_cost_pct": 45, "food_cost_exceeds_target": false, "contribution_margin_thb": 34.87, "total_orders": 32150, "menu_mix_restaurant_pct": 34.13, "quadrant_within_restaurant": "Stars", "menu_mix_tier_pct": 9.53, "quadrant_within_tier": "Plowhorses", "total_revenue_thb": 1929000, "total_cm_thb": 1121070.5, "strategic_recommendation": "⭐ เมนูดาวเด่น (ขายดี+กำไรสูง): รักษาสูตร คุณภาพ และตำแหน่งในเมนู เป็นตัวชูโรงสร้างกระแสเงินสด ไม่ควรขึ้นราคาหากไม่จำเป็น"}, {"menu_item_id": "thasanam-spicy-pork", "menu_name_th": "หมูแซ่บนัว", "restaurant_id": "thasanam-boat-noodles", "restaurant_name": "ก๋วยเตี๋ยวเรือ ท่าสนาม THASANAM", "price_tier": "economy", "price_confidence": "unverified", "selling_price_thb": 60, "food_cost_thb": 37.54, "food_cost_pct": 62.57, "target_food_cost_pct": 45, "food_cost_exceeds_target": true, "contribution_margin_thb": 22.46, "total_orders": 31857, "menu_mix_restaurant_pct": 33.82, "quadrant_within_restaurant": "Plowhorses", "menu_mix_tier_pct": 9.45, "quadrant_within_tier": "Plowhorses", "total_revenue_thb": 1911420, "total_cm_thb": 715508.22, "strategic_recommendation": "🐴 ม้างาน (ขายดีมากแต่กำไรต่ำ): ปรับสัดส่วนวัตถุดิบแพง เพิ่มคาร์บหรือผัก ปรับขึ้นราคา 3-5 บาทแบบค่อยเป็นค่อยไป หรือจับคู่ Bundle กับเมนูกำไรสูง"}, {"menu_item_id": "thasanam-boat-noodle-soup", "menu_name_th": "ก๋วยเตี๋ยวเรือน้ำ", "restaurant_id": "thasanam-boat-noodles", "restaurant_name": "ก๋วยเตี๋ยวเรือ ท่าสนาม THASANAM", "price_tier": "economy", "price_confidence": "unverified", "selling_price_thb": 40, "food_cost_thb": 26.48, "food_cost_pct": 66.2, "target_food_cost_pct": 45, "food_cost_exceeds_target": true, "contribution_margin_thb": 13.52, "total_orders": 30188, "menu_mix_restaurant_pct": 32.05, "quadrant_within_restaurant": "Plowhorses", "menu_mix_tier_pct": 8.95, "quadrant_within_tier": "Plowhorses", "total_revenue_thb": 1207520, "total_cm_thb": 408141.76, "strategic_recommendation": "🐴 ม้างาน (ขายดีมากแต่กำไรต่ำ): ปรับสัดส่วนวัตถุดิบแพง เพิ่มคาร์บหรือผัก ปรับขึ้นราคา 3-5 บาทแบบค่อยเป็นค่อยไป หรือจับคู่ Bundle กับเมนูกำไรสูง"}, {"menu_item_id": "volcano-sour-curry-prawn-omelette", "menu_name_th": "แกงส้มชะอมกุ้ง", "restaurant_id": "volcano-prawn", "restaurant_name": "กุ้งอบภูเขาไฟ", "price_tier": "mid", "price_confidence": "unverified", "selling_price_thb": 180, "food_cost_thb": 77.58, "food_cost_pct": 43.1, "target_food_cost_pct": 40, "food_cost_exceeds_target": true, "contribution_margin_thb": 102.42, "total_orders": 11550, "menu_mix_restaurant_pct": 56.46, "quadrant_within_restaurant": "Plowhorses", "menu_mix_tier_pct": 9.66, "quadrant_within_tier": "Stars", "total_revenue_thb": 2079000, "total_cm_thb": 1182951.0, "strategic_recommendation": "🐴 ม้างาน (ขายดีมากแต่กำไรต่ำ): ปรับสัดส่วนวัตถุดิบแพง เพิ่มคาร์บหรือผัก ปรับขึ้นราคา 3-5 บาทแบบค่อยเป็นค่อยไป หรือจับคู่ Bundle กับเมนูกำไรสูง"}, {"menu_item_id": "volcano-baked-prawn", "menu_name_th": "กุ้งอบภูเขาไฟ", "restaurant_id": "volcano-prawn", "restaurant_name": "กุ้งอบภูเขาไฟ", "price_tier": "premium_social", "price_confidence": "unverified", "selling_price_thb": 800, "food_cost_thb": 222.02, "food_cost_pct": 27.75, "target_food_cost_pct": 35, "food_cost_exceeds_target": false, "contribution_margin_thb": 577.98, "total_orders": 4494, "menu_mix_restaurant_pct": 21.97, "quadrant_within_restaurant": "Puzzles", "menu_mix_tier_pct": 8.44, "quadrant_within_tier": "Stars", "total_revenue_thb": 3595200, "total_cm_thb": 2597442.12, "strategic_recommendation": "🧩 ปริศนา (กำไรดีมากแต่ยอดขายน้อย): เร่งโปรโมชัน เพิ่มการมองเห็นในแอป MueNee ตรวจสอบและยืนยันข้อมูลราคา (Verified) และสารก่อภูมิแพ้เพื่อปลดล็อกฟิลเตอร์ผู้ใช้"}, {"menu_item_id": "volcano-three-armies-salad", "menu_name_th": "ยำสามทัพ", "restaurant_id": "volcano-prawn", "restaurant_name": "กุ้งอบภูเขาไฟ", "price_tier": "premium_social", "price_confidence": "unverified", "selling_price_thb": 250, "food_cost_thb": 87.03, "food_cost_pct": 34.81, "target_food_cost_pct": 35, "food_cost_exceeds_target": false, "contribution_margin_thb": 162.97, "total_orders": 4414, "menu_mix_restaurant_pct": 21.58, "quadrant_within_restaurant": "Dogs", "menu_mix_tier_pct": 8.29, "quadrant_within_tier": "Plowhorses", "total_revenue_thb": 1103500, "total_cm_thb": 719349.58, "strategic_recommendation": "🐶 สุนัขเฝ้าบ้าน (ขายน้อย+กำไรต่ำ): ปรับตำแหน่งการวางในเมนู หรือปรับสูตรเพื่อลดของสดเหลือทิ้ง"}], "forecast_timeline": {"dates": ["2027-05-29", "2027-05-30", "2027-05-31", "2027-06-01", "2027-06-02", "2027-06-03", "2027-06-04", "2027-06-05", "2027-06-06", "2027-06-07", "2027-06-08", "2027-06-09", "2027-06-10", "2027-06-11", "2027-06-12", "2027-06-13", "2027-06-14", "2027-06-15", "2027-06-16", "2027-06-17", "2027-06-18", "2027-06-19", "2027-06-20", "2027-06-21", "2027-06-22", "2027-06-23", "2027-06-24", "2027-06-25", "2027-06-26", "2027-06-27", "2027-06-28", "2027-06-29", "2027-06-30", "2027-07-01", "2027-07-02", "2027-07-03", "2027-07-04", "2027-07-05", "2027-07-06", "2027-07-07", "2027-07-08", "2027-07-09", "2027-07-10", "2027-07-11", "2027-07-12", "2027-07-13", "2027-07-14", "2027-07-15", "2027-07-16", "2027-07-17", "2027-07-18", "2027-07-19", "2027-07-20", "2027-07-21", "2027-07-22", "2027-07-23", "2027-07-24", "2027-07-25", "2027-07-26", "2027-07-27", "2027-07-28", "2027-07-29", "2027-07-30", "2027-07-31"], "actual": [264, 277, 356, 352, 356, 619, 343, 302, 292, 570, 593, 624, 583, 558, 485, 495, 614, 568, 599, 559, 611, 464, 508, 548, 563, 573, 593, 544, 521, 445, 612, 604, 612, 574, 591, 451, 486, 549, 593, 562, 573, 566, 436, 448, 570, 608, 562, 587, 600, 443, 454, 361, 385, 380, 383, 338, 261, 259, 339, 354, 587, 341, 384, 295], "forecast": [282.8, 282.8, 349.4, 349.4, 349.4, 582.3, 349.4, 282.8, 282.8, 582.3, 582.3, 582.3, 582.3, 582.3, 471.4, 471.4, 582.3, 582.3, 582.3, 582.3, 582.3, 471.4, 471.4, 582.3, 582.3, 582.3, 582.3, 582.3, 471.4, 471.4, 582.3, 582.3, 582.3, 582.3, 582.3, 471.4, 471.4, 582.3, 582.3, 582.3, 582.3, 582.3, 471.4, 471.4, 582.3, 582.3, 582.3, 582.3, 582.3, 471.4, 471.4, 349.4, 349.4, 349.4, 349.4, 349.4, 282.8, 282.8, 349.4, 349.4, 582.3, 349.4, 349.4, 282.8], "ci_lo_95": [223.7, 223.7, 290.2, 290.2, 290.2, 523.2, 290.2, 223.7, 223.7, 523.2, 523.2, 523.2, 523.2, 523.2, 412.2, 412.2, 523.2, 523.2, 523.2, 523.2, 523.2, 412.2, 412.2, 523.2, 523.2, 523.2, 523.2, 523.2, 412.2, 412.2, 523.2, 523.2, 523.2, 523.2, 523.2, 412.2, 412.2, 523.2, 523.2, 523.2, 523.2, 523.2, 412.2, 412.2, 523.2, 523.2, 523.2, 523.2, 523.2, 412.2, 412.2, 290.2, 290.2, 290.2, 290.2, 290.2, 223.7, 223.7, 290.2, 290.2, 523.2, 290.2, 290.2, 223.7], "ci_hi_95": [342.0, 342.0, 408.6, 408.6, 408.6, 641.5, 408.6, 342.0, 342.0, 641.5, 641.5, 641.5, 641.5, 641.5, 530.6, 530.6, 641.5, 641.5, 641.5, 641.5, 641.5, 530.6, 530.6, 641.5, 641.5, 641.5, 641.5, 641.5, 530.6, 530.6, 641.5, 641.5, 641.5, 641.5, 641.5, 530.6, 530.6, 641.5, 641.5, 641.5, 641.5, 641.5, 530.6, 530.6, 641.5, 641.5, 641.5, 641.5, 641.5, 530.6, 530.6, 408.6, 408.6, 408.6, 408.6, 408.6, 342.0, 342.0, 408.6, 408.6, 641.5, 408.6, 408.6, 342.0], "period": ["semester_break", "semester_break", "semester_break", "semester_break", "semester_break", "public_holiday", "semester_break", "semester_break", "semester_break", "summer_session", "summer_session", "summer_session", "summer_session", "summer_session", "summer_session", "summer_session", "summer_session", "summer_session", "summer_session", "summer_session", "summer_session", "summer_session", "summer_session", "summer_session", "summer_session", "summer_session", "summer_session", "summer_session", "summer_session", "summer_session", "summer_session", "summer_session", "summer_session", "summer_session", "summer_session", "summer_session", "summer_session", "summer_session", "summer_session", "summer_session", "summer_session", "summer_session", "summer_session", "summer_session", "summer_session", "summer_session", "summer_session", "summer_session", "summer_session", "summer_session", "public_holiday", "semester_break", "semester_break", "semester_break", "semester_break", "semester_break", "semester_break", "semester_break", "semester_break", "semester_break", "public_holiday", "semester_break", "semester_break", "semester_break"]}, "scenarios": [{"id": "baseline", "name": "Baseline (Normal Prices)", "weeks": 52, "total_impact_thb": 0.0, "weekly_impact_thb": 0.0, "avg_fc_delta_pct": 0.0}, {"id": "shock_combined", "name": "Combined Shock: G1+20%, G2+15%, G7+30%, G8+10% (8 Weeks)", "weeks": 8, "total_impact_thb": -291209.76, "weekly_impact_thb": -36401.22, "avg_fc_delta_pct": 3.48}, {"id": "shock_pork_30", "name": "G1 Pork +30% (8 Weeks)", "weeks": 8, "total_impact_thb": -151975.52, "weekly_impact_thb": -18996.94, "avg_fc_delta_pct": 1.82}, {"id": "shock_poultry_25", "name": "G2 Poultry +25% (6 Weeks)", "weeks": 6, "total_impact_thb": -73012.68, "weekly_impact_thb": -12168.78, "avg_fc_delta_pct": 1.05}, {"id": "shock_seafood_40", "name": "G4 Seafood +40% (4 Weeks)", "weeks": 4, "total_impact_thb": -303471.2, "weekly_impact_thb": -75867.8, "avg_fc_delta_pct": 7.46}, {"id": "shock_veg_50", "name": "G7 Fresh Veg +50% (3 Weeks)", "weeks": 3, "total_impact_thb": -69780.81, "weekly_impact_thb": -23260.27, "avg_fc_delta_pct": 2.33}], "edge_cases": {"total_blocked_orders": 28617, "total_blocked_revenue": 3083950.0, "total_uplift_orders": 29217, "total_uplift_revenue": 2717491.0, "store_breakdown": [{"restaurant_name": "Bonchon Sanamchan Nakornpathom", "price_confidence": "verified", "annual_blocked_revenue_thb": 206048, "annual_uplift_revenue_thb": 0}, {"restaurant_name": "Good Food", "price_confidence": "unverified", "annual_blocked_revenue_thb": 286816, "annual_uplift_revenue_thb": 529571}, {"restaurant_name": "KinKane 89", "price_confidence": "unverified", "annual_blocked_revenue_thb": 195120, "annual_uplift_revenue_thb": 348150}, {"restaurant_name": "TAMA Japanese Restaurant นครปฐม", "price_confidence": "verified", "annual_blocked_revenue_thb": 367049, "annual_uplift_revenue_thb": 0}, {"restaurant_name": "กุ้งอบภูเขาไฟ", "price_confidence": "unverified", "annual_blocked_revenue_thb": 392410, "annual_uplift_revenue_thb": 711690}, {"restaurant_name": "ก๋วยเตี๋ยวเรือ ท่าสนาม THASANAM", "price_confidence": "unverified", "annual_blocked_revenue_thb": 265500, "annual_uplift_revenue_thb": 530060}, {"restaurant_name": "ข้าวมันไก่ป้าจ๋า 23 ชั่วโมง", "price_confidence": "verified", "annual_blocked_revenue_thb": 436505, "annual_uplift_revenue_thb": 0}, {"restaurant_name": "มาดามโฮ เฝอหม้อไฟ หน้า ม.ศิลปากร นครปฐม", "price_confidence": "verified", "annual_blocked_revenue_thb": 371372, "annual_uplift_revenue_thb": 0}, {"restaurant_name": "ร้านฮิ้น ข้าวหมูแดง", "price_confidence": "unverified", "annual_blocked_revenue_thb": 306360, "annual_uplift_revenue_thb": 598020}, {"restaurant_name": "ลุงลอยป่าลั่น", "price_confidence": "verified", "annual_blocked_revenue_thb": 256770, "annual_uplift_revenue_thb": 0}]}};
+
+    // Tab Navigation
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(tabId).style.display = 'block';
+      event.target.classList.add('active');
+
+      // Trigger chart resize
+      window.dispatchEvent(new Event('resize'));
+    }
+
+    // Initialize Store Select
+    function initStores() {
+      const select = document.getElementById('storeSelect');
+      select.innerHTML = '';
+      PIPELINE_DATA.restaurants.forEach((r, idx) => {
+        const opt = document.createElement('option');
+        opt.value = r.id;
+        opt.textContent = `${idx + 1}. ${r.name} (${r.tier})`;
+        select.appendChild(opt);
+      });
+      renderStoreDetails(PIPELINE_DATA.restaurants[0].id);
+    }
+
+    // Render Store Details
+    function renderStoreDetails(storeId) {
+      const store = PIPELINE_DATA.restaurants.find(r => r.id === storeId);
+      if (!store) return;
+
+      document.getElementById('storeQuickMeta').textContent = `รหัสร้าน: ${store.id} | ระดับราคา: ${store.tier} | สถานะ: ${store.confidence}`;
+      document.getElementById('storeWasteRed').textContent = `${store.waste_reduction_pct}%`;
+      document.getElementById('storeWasteKg').textContent = `ของเน่าเสียลดลงจาก ${store.baseline_waste_kg} กก. เหลือ ${store.muenee_waste_kg} กก.`;
+      document.getElementById('storeStockout').textContent = `${store.stockout_rate}%`;
+      
+      const confEl = document.getElementById('storeConfidence');
+      const confNote = document.getElementById('storeConfidenceNote');
+      if (store.confidence === 'verified') {
+        confEl.innerHTML = '<span style="color:#059669;">Verified (ยืนยันแล้ว)</span>';
+        confNote.textContent = 'ไม่ถูกหักคะแนน Choice Penalty ในระบบแนะนำ';
+      } else {
+        confEl.innerHTML = '<span style="color:#d97706;">Unverified (ยังไม่ยืนยัน)</span>';
+        confNote.textContent = 'มีโอกาสเพิ่มยอดขาย +10.5% หากกดยืนยันราคา';
+      }
+
+      // Menu Table
+      const menuTbody = document.querySelector('#storeMenuTable tbody');
+      menuTbody.innerHTML = '';
+      store.menus.forEach(m => {
+        const qClass = m.quadrant_within_restaurant === 'Stars' ? 'stars' :
+                       m.quadrant_within_restaurant === 'Plowhorses' ? 'plow' :
+                       m.quadrant_within_restaurant === 'Puzzles' ? 'puzz' : 'dogs';
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="font-weight:700;">${m.menu_name_th}</td>
+          <td>฿${m.selling_price_thb}</td>
+          <td>${m.food_cost_pct}%</td>
+          <td style="font-weight:700; color:#0d9488;">฿${m.contribution_margin_thb}</td>
+          <td><span class="tag-quad ${qClass}">${m.quadrant_within_restaurant}</span></td>
+        `;
+        menuTbody.appendChild(tr);
+      });
+
+      // Procurement Plan Table
+      const planTbody = document.querySelector('#storePlanTable tbody');
+      planTbody.innerHTML = '';
+      const cThai = {
+        "pork_and_cuts": "เนื้อสุกรและชิ้นส่วน",
+        "poultry": "สัตว์ปีก (ไก่/เป็ด)",
+        "beef": "เนื้อโค",
+        "seafood": "อาหารทะเลสด",
+        "egg_and_tofu": "ไข่และเต้าหู้",
+        "carb_base": "ข้าวสารและเส้น",
+        "fresh_veg_herbs": "ผักสดและสมุนไพร",
+        "sauce_seasoning": "ซอสและเครื่องปรุง"
+      };
+
+      store.procurement_plan.forEach(p => {
+        const inv = p.ending_inventory_kg;
+        const rop = p.reorder_point_kg;
+        let pill = '<span class="traffic-pill traffic-green">🟢 สต็อกพอดี</span>';
+        if (inv <= rop * 0.5) {
+          pill = '<span class="traffic-pill traffic-red">🔴 ต้องสั่งด่วน</span>';
+        } else if (inv <= rop) {
+          pill = '<span class="traffic-pill traffic-amber">🟡 ใกล้จุดสั่งซื้อ</span>';
+        }
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="font-weight:600;">${cThai[p.commodity_group_name] || p.commodity_group_name}</td>
+          <td>${inv} กก.</td>
+          <td style="font-weight:700; color:#0f172a;">${p.order_quantity_kg} กก.</td>
+          <td>${pill}</td>
+        `;
+        planTbody.appendChild(tr);
+      });
+    }
+
+    // Render Full 30 Menus Table
+    function renderFullMenuTable() {
+      const tbody = document.querySelector('#fullMenuTable tbody');
+      tbody.innerHTML = '';
+      PIPELINE_DATA.menus.forEach(m => {
+        const qClass = m.quadrant_within_restaurant === 'Stars' ? 'stars' :
+                       m.quadrant_within_restaurant === 'Plowhorses' ? 'plow' :
+                       m.quadrant_within_restaurant === 'Puzzles' ? 'puzz' : 'dogs';
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="font-weight:700;">${m.menu_name_th}</td>
+          <td>${m.restaurant_name}</td>
+          <td><span style="font-size:12px; background:#f1f5f9; padding:2px 6px; border-radius:4px;">${m.price_tier}</span></td>
+          <td>฿${m.selling_price_thb}</td>
+          <td>${m.food_cost_pct}%</td>
+          <td style="font-weight:700; color:#0d9488;">฿${m.contribution_margin_thb}</td>
+          <td><span class="tag-quad ${qClass}">${m.quadrant_within_restaurant}</span></td>
+          <td style="font-size:13px; line-height:1.4;">${m.strategic_recommendation}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Initialize Scenario Simulator
+    let currentScenarioChart = null;
+    function initScenarios() {
+      const container = document.getElementById('scenarioButtons');
+      container.innerHTML = '';
+      PIPELINE_DATA.scenarios.forEach((scen, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'scen-btn' + (idx === 1 ? ' active' : '');
+        btn.textContent = scen.name;
+        btn.onclick = () => selectScenario(scen.id, btn);
+        container.appendChild(btn);
+      });
+      selectScenario(PIPELINE_DATA.scenarios[1].id, container.children[1]);
+    }
+
+    function selectScenario(scenId, btnElement) {
+      document.querySelectorAll('.scen-btn').forEach(b => b.classList.remove('active'));
+      if (btnElement) btnElement.classList.add('active');
+
+      const scen = PIPELINE_DATA.scenarios.find(s => s.id === scenId);
+      if (!scen) return;
+
+      document.getElementById('scenWeeklyLoss').textContent = `-฿${Math.abs(scen.weekly_impact_thb).toLocaleString()}`;
+      document.getElementById('scenTotalLoss').textContent = `-฿${Math.abs(scen.total_impact_thb).toLocaleString()}`;
+      document.getElementById('scenDurationText').textContent = `ระยะเวลา Shock: ${scen.weeks} สัปดาห์`;
+      document.getElementById('scenFcDelta').textContent = `+${scen.avg_fc_delta_pct}%`;
+    }
+
+    // CHARTS INITIALIZATION
+    window.onload = function() {
+      initStores();
+      renderFullMenuTable();
+      initScenarios();
+
+      // Chart 1: Forecast Chart
+      const fcCtx = document.getElementById('forecastChart').getContext('2d');
+      new Chart(fcCtx, {
+        type: 'line',
+        data: {
+          labels: PIPELINE_DATA.forecast_timeline.dates.map(d => d.slice(5)),
+          datasets: [
+            {
+              label: 'ยอดคำสั่งซื้อจริง (Actual Orders)',
+              data: PIPELINE_DATA.forecast_timeline.actual,
+              borderColor: '#0f172a',
+              backgroundColor: '#0f172a',
+              borderWidth: 2,
+              pointRadius: 2.5,
+              tension: 0.1
+            },
+            {
+              label: 'SARIMA Point Forecast',
+              data: PIPELINE_DATA.forecast_timeline.forecast,
+              borderColor: '#0d9488',
+              backgroundColor: 'rgba(13, 148, 136, 0.1)',
+              borderWidth: 2.5,
+              pointRadius: 0,
+              tension: 0.2
+            },
+            {
+              label: '95% Confidence Upper Band',
+              data: PIPELINE_DATA.forecast_timeline.ci_hi_95,
+              borderColor: 'rgba(13, 148, 136, 0.25)',
+              borderDash: [4, 4],
+              pointRadius: 0,
+              fill: false
+            },
+            {
+              label: '95% Confidence Lower Band',
+              data: PIPELINE_DATA.forecast_timeline.ci_lo_95,
+              borderColor: 'rgba(13, 148, 136, 0.25)',
+              borderDash: [4, 4],
+              pointRadius: 0,
+              fill: '-1',
+              backgroundColor: 'rgba(13, 148, 136, 0.08)'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'bottom', labels: { boxWidth: 12, font: { family: 'Prompt', size: 12 } } }
+          },
+          scales: {
+            y: { title: { display: true, text: 'จาน/วัน (Orders)', font: { family: 'Prompt' } } },
+            x: { ticks: { maxTicksLimit: 12 } }
+          }
+        }
+      });
+
+      // Chart 2: Waste Reduction Chart
+      const wCtx = document.getElementById('wasteChart').getContext('2d');
+      new Chart(wCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['ของเสียที่ประหยัดได้ (Saved Waste)', 'ของเสียคงเหลือ (MueNee Policy)'],
+          datasets: [{
+            data: [11437.0, 58.8],
+            backgroundColor: ['#10b981', '#ef4444'],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'bottom', labels: { font: { family: 'Prompt', size: 12 } } }
+          }
+        }
+      });
+
+      // Chart 3: Quadrant Scatter Chart
+      const qCtx = document.getElementById('quadrantScatterChart').getContext('2d');
+      const quadColors = { 'Stars': '#0d9488', 'Plowhorses': '#f97316', 'Puzzles': '#3b82f6', 'Dogs': '#ef4444' };
+      new Chart(qCtx, {
+        type: 'scatter',
+        data: {
+          datasets: Object.keys(quadColors).map(qName => ({
+            label: qName,
+            data: PIPELINE_DATA.menus
+              .filter(m => m.quadrant_within_restaurant === qName)
+              .map(m => ({ x: m.menu_mix_restaurant_pct, y: m.contribution_margin_thb, name: m.menu_name_th, rest: m.restaurant_name })),
+            backgroundColor: quadColors[qName],
+            pointRadius: 7,
+            pointHoverRadius: 9
+          }))
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: (ctx) => `${ctx.raw.name} (${ctx.raw.rest}): Menu Mix ${ctx.raw.x}% | CM ฿${ctx.raw.y} [${ctx.dataset.label}]`
+              }
+            },
+            legend: { position: 'bottom', labels: { font: { family: 'Prompt', size: 13 } } }
+          },
+          scales: {
+            x: { title: { display: true, text: 'ความนิยม (Menu Mix % ภายในร้าน)', font: { family: 'Prompt' } } },
+            y: { title: { display: true, text: 'กำไรส่วนเกินต่อจาน (Contribution Margin บาท)', font: { family: 'Prompt' } } }
+          }
+        }
+      });
+
+      // Chart 4: Price Shock Impact Chart
+      const sCtx = document.getElementById('shockBarChart').getContext('2d');
+      new Chart(sCtx, {
+        type: 'bar',
+        data: {
+          labels: PIPELINE_DATA.scenarios.map(s => s.name.split(' (')[0]),
+          datasets: [{
+            label: 'ผลกระทบต่อกำไรขั้นต้นรวม (บาท/ช่วงวิกฤต)',
+            data: PIPELINE_DATA.scenarios.map(s => Math.abs(s.total_impact_thb)),
+            backgroundColor: ['#94a3b8', '#f97316', '#eab308', '#06b6d4', '#10b981', '#ef4444']
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { title: { display: true, text: 'มูลค่ากำไรที่ลดลง (บาท)', font: { family: 'Prompt' } } }
+          }
+        }
+      });
+
+      // Chart 5: Growth Bar Chart
+      const gCtx = document.getElementById('growthBarChart').getContext('2d');
+      new Chart(gCtx, {
+        type: 'bar',
+        data: {
+          labels: PIPELINE_DATA.edge_cases.store_breakdown.map(s =>
+            s.price_confidence === 'verified'
+              ? `${s.restaurant_name} [Verified ✅]`
+              : `${s.restaurant_name} [Unverified ⏳]`
+          ),
+          datasets: [
+            {
+              label: 'โอกาสจากสารก่อภูมิแพ้ (Allergen Verification)',
+              data: PIPELINE_DATA.edge_cases.store_breakdown.map(s => s.annual_blocked_revenue_thb),
+              backgroundColor: '#f97316'
+            },
+            {
+              label: 'โอกาสจากการยืนยันราคา (Price Verification Uplift)',
+              data: PIPELINE_DATA.edge_cases.store_breakdown.map(s => s.annual_uplift_revenue_thb),
+              backgroundColor: '#0d9488'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          indexAxis: 'y',
+          plugins: {
+            legend: { position: 'bottom', labels: { font: { family: 'Prompt', size: 12 } } },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => {
+                  const store = PIPELINE_DATA.edge_cases.store_breakdown[ctx.dataIndex];
+                  if (ctx.datasetIndex === 1 && store.price_confidence === 'verified') {
+                    return `${ctx.dataset.label}: ฿0 (ยืนยันราคาถูกต้องแล้ว ได้รับยอดขายเต็ม 100%)`;
+                  }
+                  return `${ctx.dataset.label}: ฿${Number(ctx.raw).toLocaleString()} บาท/ปี`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: { stacked: true, title: { display: true, text: 'มูลค่ารายได้เพิ่ม (บาท/ปี)', font: { family: 'Prompt', size: 13 } } },
+            y: { stacked: true, ticks: { font: { family: 'Prompt', size: 12, weight: '600' }, color: '#1e293b' } }
+          }
+        }
+      });
+    };
+  </script>
+</body>
+</html>

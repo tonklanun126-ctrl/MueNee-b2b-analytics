@@ -1,0 +1,144 @@
+# ==============================================================================
+# MueNee-b2b-analytics: Simulation & Choice Model Parameters
+# พารามิเตอร์การจำลองข้อมูลความต้องการผู้บริโภคและสถานการณ์ราคา
+# ==============================================================================
+# อ้างอิงข้อกำหนดใน SPEC.md (§2.1, §4.2 และ §4.3)
+# ==============================================================================
+
+# ข้อมูลควบคุมการจำลอง (Simulation Metadata & Reproducibility)
+meta:
+  run_id: "A-20260101-v1"
+  random_seed: 20260101
+  pipeline_version: "1.0.0"
+  description: "Deterministic seed for 365-day synthetic consumer demand generation"
+
+# ช่วงเวลาการจำลอง (Simulation Horizon)
+time_horizon:
+  start_date: "2026-08-01"
+  end_date: "2027-07-31"
+  total_days: 365
+  timezone: "Asia/Bangkok"
+
+# กลุ่มประชากรผู้บริโภคจำลองรอบ ม.ศิลปากร สนามจันทร์ (User Demographics Profile)
+demographics:
+  total_synthetic_users: 5000
+  segment_shares:
+    undergraduate_student:
+      share: 0.75
+      description: "นักศึกษาระดับปริญญาตรี มีความถี่การบริโภคสูง งบประมาณจำกัด อ่อนไหวต่อราคาสูง"
+      avg_daily_meals: 2.2
+    faculty_and_staff:
+      share: 0.10
+      description: "คณาจารย์และบุคลากรมหาวิทยาลัย บริโภคมื้อกลางวันสม่ำเสมอในวันทำการ"
+      avg_daily_meals: 1.0
+    dorm_and_community_resident:
+      share: 0.15
+      description: "ผู้อยู่อาศัยในหอพักและชุมชนโดยรอบ เน้นมื้อเย็นและเดลิเวอรี"
+      avg_daily_meals: 1.5
+
+# พฤติกรรมงบประมาณมื้ออาหาร (MealBudget Distribution)
+budget_tiers:
+  economy:
+    range_thb: [40, 70]
+    user_choice_probability: 0.65
+    preset_shortcuts: [60, 80]
+  mid:
+    range_thb: [80, 180]
+    user_choice_probability: 0.25
+    preset_shortcuts: [80, 100, 150]
+  premium_social:
+    range_thb: [199, 800]
+    user_choice_probability: 0.10
+    weekend_multiplier: 1.80
+
+# สัดส่วนข้อจำกัดทางอาหารในกลุ่มประชากร (Prevalence of Dietary Constraints)
+dietary_constraints:
+  hard_restrictions:
+    no_pork: 0.08
+    no_beef: 0.15
+    vegetarian: 0.03
+    halal_only: 0.04
+  allergies_prevalence:
+    peanut: 0.02
+    tree_nuts: 0.01
+    milk: 0.06
+    egg: 0.04
+    soy: 0.03
+    wheat: 0.03
+    fish: 0.02
+    shellfish: 0.05
+    sesame: 0.01
+  dislikes_prevalence:
+    pork: 0.02
+    beef: 0.08
+    chicken: 0.01
+    fish: 0.04
+    shellfish: 0.04
+    egg: 0.02
+    milk: 0.03
+    mushroom: 0.05
+    coriander: 0.12 # ผักชี ไม่ชอบ 12%
+    offal: 0.22     # เครื่องใน ไม่ชอบ 22%
+  hide_disliked_preference_rate: 0.35 # ผู้ใช้ 35% เลือกระบุ hideDisliked = true
+
+# พารามิเตอร์แบบจำลองการเลือก (Choice Model / Multinomial Logit)
+# Utility: V_{u,i} = beta_tag * S_{u,i} - beta_price * (price_i / budget_u) - lambda * unverified_i - delta * disliked_{u,i}
+choice_model:
+  beta_tag: 1.20
+  beta_price: 1.50
+  lambda_unverified_penalty: 0.50 # ค่าปรับความไม่เชื่อมั่นของราคา (unverified)
+  delta_dislike_penalty: 0.80     # ค่าปรับเมนูที่มีวัตถุดิบที่ไม่ชอบ (dislike)
+  sensitivity_lambda_grid: [0.0, 0.25, 0.50, 1.00]
+
+# สัดส่วนช่องทางการบันทึกมื้ออาหาร (Meal Log Source Distribution)
+log_sources:
+  recommendation: 0.50
+  food_scan: 0.25
+  manual: 0.25
+
+# การกระจายตามช่วงเวลาของวัน (Intra-day Temporal Patterns)
+temporal_patterns:
+  meal_time_shares:
+    lunch:
+      time_window: "11:30 - 13:30"
+      share: 0.45
+    dinner:
+      time_window: "17:30 - 20:30"
+      share: 0.35
+    late_night:
+      time_window: "22:00 - 02:00"
+      share_regular: 0.08
+      share_exam_season: 0.22 # มื้อดึกเพิ่มขึ้นชัดเจนช่วงสอบ
+    other_times:
+      share: 0.12
+
+# พารามิเตอร์จำลองวิกฤตราคาวัตถุดิบในตลาดสดนครปฐม (Price Shock Scenarios SPEC §4.3)
+price_shock_scenarios:
+  deterministic:
+    shock_pork_30:
+      target_commodity_group_id: 1
+      shock_magnitude: 0.30
+      duration_weeks: 8
+    shock_poultry_25:
+      target_commodity_group_id: 2
+      shock_magnitude: 0.25
+      duration_weeks: 6
+    shock_seafood_40:
+      target_commodity_group_id: 4
+      shock_magnitude: 0.40
+      duration_weeks: 4
+    shock_veg_50:
+      target_commodity_group_id: 7
+      shock_magnitude: 0.50
+      duration_weeks: 3
+    shock_combined:
+      groups:
+        G1: 0.20
+        G2: 0.15
+        G7: 0.30
+        G8: 0.10
+      duration_weeks: 8
+  stochastic_monte_carlo:
+    iterations: 10000
+    confidence_interval: 0.95
+

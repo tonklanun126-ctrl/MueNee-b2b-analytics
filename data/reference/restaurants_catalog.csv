@@ -1,0 +1,12 @@
+restaurant_id,name,google_place_id,latitude,longitude,address,rating,verification_status,is_active
+madam-ho-sanamchan,มาดามโฮ เฝอหม้อไฟ หน้า ม.ศิลปากร นครปฐม,ChIJOzc6os3l4jARB84YKHWyoj8,13.8140352,100.0391741,119/7 ถนนทรงพล ตำบลลำพยา อำเภอเมืองนครปฐม นครปฐม 73000,4.6,verified,TRUE
+volcano-prawn,กุ้งอบภูเขาไฟ,ChIJQRxWKtTl4jAR4dIrcJVbBSU,13.8042573,100.0413817,ตำบลสนามจันทร์ อำเภอเมืองนครปฐม นครปฐม 73000,4.5,verified,TRUE
+bonchon-sanamchan,Bonchon Sanamchan Nakornpathom,ChIJARhVkYHl4jARhYnz8mp33KM,13.8141035,100.0392829,119/2-4 ถนนทรงพล ตำบลลำพยา อำเภอเมืองนครปฐม นครปฐม 73000,4.5,verified,TRUE
+pa-ja-23-hours,ข้าวมันไก่ป้าจ๋า 23 ชั่วโมง,ChIJTbm7PNDl4jARKfIvSUP5ixs,13.8114221,100.0454665,ตำบลพระปฐมเจดีย์ อำเภอเมืองนครปฐม นครปฐม 73000,4.9,verified,TRUE
+good-food-nakhon-pathom,Good Food,ChIJl6DyJeXl4jARDcSJ6SNjmho,13.8147462,100.0453114,ถนนยิงเป้า ตำบลพระปฐมเจดีย์ อำเภอเมืองนครปฐม นครปฐม 73000,4.9,verified,TRUE
+tama-nakhon-pathom,TAMA Japanese Restaurant นครปฐม,ChIJMXeGyofl4jARtF1x3H7FTiE,13.8142539,100.040768,135/2 ห้อง 4 ตลาด Meeting Point ถนนสนามจันทร์ อำเภอเมืองนครปฐม นครปฐม 73000,4.8,verified,TRUE
+loong-loy-pa-lan,ลุงลอยป่าลั่น,ChIJ0cCqC93l4jARxhtbq33DscA,13.8092718,100.0569076,1010 ถนนเพชรเกษม ตำบลสนามจันทร์ อำเภอเมืองนครปฐม นครปฐม 73000,4.2,verified,TRUE
+kinkane-89,KinKane 89,ChIJv7nnqtHl4jARMx1ojcJc7mU,13.8109457,100.0432165,64 ถนนจันทรคามพิทักษ์ ตำบลสนามจันทร์ อำเภอเมืองนครปฐม นครปฐม 73000,4.4,verified,TRUE
+hinn-red-pork-rice,ร้านฮิ้น ข้าวหมูแดง,ChIJxSbXEM_l4jARwM4F82AYm_0,13.8161391,100.0452057,ถนนราชมรรคาใน ใกล้โรงเรียนสาธิต ม.ศิลปากร อำเภอเมืองนครปฐม นครปฐม 73000,4.3,verified,TRUE
+thasanam-boat-noodles,ก๋วยเตี๋ยวเรือ ท่าสนาม THASANAM,ChIJQQMnDs_l4jARYfvOanBx37c,13.8157152,100.045282,ถนนราชมรรคาใน หน้าโรงเรียนสาธิต ม.ศิลปากร อำเภอเมืองนครปฐม นครปฐม 73000,4.3,verified,TRUE
+
